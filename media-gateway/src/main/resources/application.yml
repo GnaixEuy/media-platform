@@ -1,0 +1,18 @@
+server:
+  port: 8123
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: auth-server
+          uri: lb://auth-server
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
