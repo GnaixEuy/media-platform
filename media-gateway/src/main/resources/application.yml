@@ -16,3 +16,8 @@ spring:
             - Path=/auth/**
           filters:
             - StripPrefix=1
+secure:
+  ignore:
+    urls: #配置白名单路径
+      - "/actuator/**"
+      - "/auth/oauth/token"
