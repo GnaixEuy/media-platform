@@ -53,4 +53,5 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+
 }

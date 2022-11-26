@@ -1,23 +1,31 @@
 server:
   port: 8123
 spring:
+  jpa:
+    generate-ddl: false
   security:
     user:
       name: admin
       password: admin
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9401/rsa/publicKey
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: auth-server
+        - id: auth-server-route
           uri: lb://auth-server
           predicates:
-            - Path=/auth/**
+            - Path=/api/auth/**
           filters:
             - StripPrefix=1
 secure:
   ignore:
     urls: #配置白名单路径
-      - "/actuator/**"
-      - "/auth/oauth/token"
+      - "/api/actuator/**"
+      - "/api/auth/oauth/token"
+      - "/api/auth/oauth/register"
+      - "/api/auth/oauth/login"
