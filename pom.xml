@@ -11,8 +11,7 @@
 
     <modules>
         <module>media-gateway</module>
-        <module>media-auth</module>
-        <module>media-user</module>
+        <module>media-uaa</module>
         <module>media-common</module>
     </modules>
 
@@ -20,11 +19,11 @@
         <java.version>11</java.version>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <spring-boot.version>2.7.5</spring-boot.version>
-        <spring-cloud.version>2021.0.4</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud-starter-oauth2.version>2.2.5.RELEASE</spring-cloud-starter-oauth2.version>
-        <nimbus-jose-jwt.version>9.25.6</nimbus-jose-jwt.version>
+        <java-jwt.version>4.2.1</java-jwt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -53,5 +52,22 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.10</version>
+        </dependency>
+    </dependencies>
 
 </project>

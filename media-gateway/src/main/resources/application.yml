@@ -1,31 +1,24 @@
 server:
-  port: 8123
+  port: 9000
 spring:
-  jpa:
-    generate-ddl: false
-  security:
-    user:
-      name: admin
-      password: admin
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:9401/rsa/publicKey
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: auth-server-route
-          uri: lb://auth-server
+        - id: school-server
+          uri: lb://school-server
           predicates:
-            - Path=/api/auth/**
+            - Path=/api/school/**
           filters:
-            - StripPrefix=1
-secure:
-  ignore:
-    urls: #配置白名单路径
-      - "/api/actuator/**"
-      - "/api/auth/oauth/token"
-      - "/api/auth/oauth/register"
-      - "/api/auth/oauth/login"
+            - RewritePath=/api/school/(?<segment>.*),/$\{segment}
+        - id: uaa-server
+          uri: lb://uaa-server
+          predicates:
+            - Path=/api/uaa/**
+          filters:
+            - RewritePath=/api/uaa/(?<segment>.*),/$\{segment}
+  jpa:
+    generate-ddl: false
+  flyway:
+    enabled: false

@@ -4,38 +4,37 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.GnaixEuy</groupId>
-        <version>0.0.1-SNAPSHOT</version>
         <artifactId>media-platform</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>media-gateway</artifactId>
+    <artifactId>media-uaa</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>media-gateway</name>
-    <description>media-gateway</description>
-
+    <name>media-uaa</name>
+    <description>media-uaa</description>
     <dependencies>
-        <dependency>
-            <groupId>cn.GnaixEuy</groupId>
-            <artifactId>media-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--授权-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>cn.GnaixEuy</groupId>
+            <artifactId>media-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
