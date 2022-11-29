@@ -1,5 +1,6 @@
 package cn.gnaixeuy.mediauser.mapper;
 
+import cn.gnaixeuy.mediacommon.vo.user.UserVo;
 import cn.gnaixeuy.mediauser.dto.UserDto;
 import cn.gnaixeuy.mediauser.entity.User;
 import org.mapstruct.Mapper;
@@ -21,5 +22,7 @@ public interface UserMapper {
 
     @Mappings(value = {@Mapping(source = "id", target = "id")})
     UserDto entity2Dto(User user);
+
+    UserVo dto2Vo(UserDto userDto);
 
 }

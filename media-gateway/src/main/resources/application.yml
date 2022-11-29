@@ -18,6 +18,12 @@ spring:
             - Path=/api/uaa/**
           filters:
             - RewritePath=/api/uaa/(?<segment>.*),/$\{segment}
+        - id: user-server
+          uri: lb://user-server
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
   jpa:
     generate-ddl: false
   flyway:
