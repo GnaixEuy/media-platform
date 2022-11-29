@@ -34,7 +34,12 @@ public class MyTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         final Map<String, Object> additionalInfo = new HashMap<>();
-        additionalInfo.put("uid", user.getId());
+        additionalInfo.put("code", 200);
+        additionalInfo.put("message", "登录成功");
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("uid", user.getId());
+        data.put("token", accessToken.getValue());
+        additionalInfo.put("data", data);
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }
