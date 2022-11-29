@@ -1,8 +1,7 @@
-package cn.gnaixeuy.mediacommon.enmus;
+package cn.gnaixeuy.mediacommon.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -16,14 +15,15 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public enum RedisDbType {
+public enum UserGender {
 
-    USER_INFO(1, "用户信息"),
-
-    PHONE_VERIFICATION_CODE(3, "手机号验证码");
-
-    private Integer code;
-    private String type;
+    /**
+     * UNKNOWN - 0 - 未知
+     * MALE - 1 - 男
+     * FEMALE - 2 - 女
+     */
+    UNKNOWN,
+    FEMALE,
+    MALE,
 
 }

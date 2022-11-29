@@ -22,3 +22,9 @@ spring:
     generate-ddl: false
   flyway:
     enabled: false
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000 #Feign的连接建立超时时间，默认为10秒
+        readTimeout: 60000 #Feign的请求处理超时时间，默认为60

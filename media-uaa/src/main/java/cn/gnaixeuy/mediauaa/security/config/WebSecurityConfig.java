@@ -27,14 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    @Autowired
     private SuccessHandler successHandler;
-
-    @Autowired
     private FailureHandler failureHandler;
-
-    @Autowired
     private LogoutHandler logoutHandler;
 
     @Bean
@@ -48,15 +42,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().formLogin()
                 .loginProcessingUrl("/login").permitAll()
                 .successHandler(successHandler).permitAll()
-                .failureHandler(failureHandler).permitAll().and()
-                .logout().logoutSuccessHandler(logoutHandler).and()
+                .failureHandler(failureHandler).permitAll()
+                .and()
+                .logout().logoutSuccessHandler(logoutHandler)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/**").permitAll();
     }
+
+    @Autowired
+    public void setSuccessHandler(SuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
+
+    @Autowired
+    public void setFailureHandler(FailureHandler failureHandler) {
+        this.failureHandler = failureHandler;
+    }
+
+    @Autowired
+    public void setLogoutHandler(LogoutHandler logoutHandler) {
+        this.logoutHandler = logoutHandler;
+    }
+
 }

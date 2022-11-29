@@ -1,6 +1,6 @@
 package cn.gnaixeuy.mediacommon.handler;
 
-import cn.gnaixeuy.mediacommon.enmus.ExceptionType;
+import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediacommon.vo.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;

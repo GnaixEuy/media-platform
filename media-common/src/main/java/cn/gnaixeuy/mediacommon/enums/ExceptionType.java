@@ -1,4 +1,4 @@
-package cn.gnaixeuy.mediacommon.enmus;
+package cn.gnaixeuy.mediacommon.enums;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>

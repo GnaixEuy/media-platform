@@ -27,9 +27,6 @@ public class LogoutHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest httpServletRequest,
                                 HttpServletResponse httpServletResponse,
                                 Authentication authentication) throws IOException, ServletException {
-
-
-
         JSONObject json = new JSONObject();
         json.put("code", 200);
         json.put("msg", "注销成功");
@@ -38,5 +35,4 @@ public class LogoutHandler implements LogoutSuccessHandler {
         httpServletResponse.getWriter().write(JSONObject.toJSONString(json));
 
     }
-
 }

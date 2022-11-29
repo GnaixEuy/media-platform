@@ -1,6 +1,8 @@
-package cn.gnaixeuy.mediauaa.service;
+package cn.gnaixeuy.mediahello.entity;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -12,5 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
-public interface UserService extends UserDetailsService {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Role extends BaseEntity {
+
+    private String name;
+
+    private String title;
+
 }

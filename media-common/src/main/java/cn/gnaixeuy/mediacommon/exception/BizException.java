@@ -1,6 +1,6 @@
 package cn.gnaixeuy.mediacommon.exception;
 
-import cn.gnaixeuy.mediacommon.enmus.ExceptionType;
+import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>

@@ -16,10 +16,11 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
-public class WebResponseTranslator implements WebResponseExceptionTranslator {
+public class WebResponseTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
 
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception exception) throws Exception {
+        exception.printStackTrace();
         if (exception instanceof InternalAuthenticationServiceException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomOauthException("账号密码错误"));
         }

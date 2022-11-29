@@ -33,19 +33,9 @@ import javax.sql.DataSource;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
-
-
-    @Autowired
     private AuthorizationCodeServices authorizationCodeServices;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private AuthorizationServerTokenServices tokenService;
-
-    @Autowired
-    @Qualifier("myClientDetailsService")
     private ClientDetailsService clientService;
 
     /**
@@ -53,17 +43,8 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
         clients.withClientDetails(clientService);
     }
-
-    @Bean("myClientDetailsService")
-    public ClientDetailsService clientDetailsService(DataSource dataSource, PasswordEncoder passwordEncoder) {
-        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
-        clientDetailsService.setPasswordEncoder(passwordEncoder);
-        return clientDetailsService;
-    }
-
 
     /**
      * 令牌访问端点
@@ -76,7 +57,6 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
                 .tokenServices(tokenService)
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST)
                 .exceptionTranslator(new WebResponseTranslator());
-
     }
 
     /**
@@ -88,6 +68,34 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();
+    }
+
+    @Autowired
+    public void setAuthorizationCodeServices(AuthorizationCodeServices authorizationCodeServices) {
+        this.authorizationCodeServices = authorizationCodeServices;
+    }
+
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    @Autowired
+    public void setTokenService(AuthorizationServerTokenServices tokenService) {
+        this.tokenService = tokenService;
+    }
+
+    @Autowired
+    @Qualifier("myClientDetailsService")
+    public void setClientService(ClientDetailsService clientService) {
+        this.clientService = clientService;
+    }
+
+    @Bean("myClientDetailsService")
+    public ClientDetailsService clientDetailsService(DataSource dataSource, PasswordEncoder passwordEncoder) {
+        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
+        clientDetailsService.setPasswordEncoder(passwordEncoder);
+        return clientDetailsService;
     }
 
 }

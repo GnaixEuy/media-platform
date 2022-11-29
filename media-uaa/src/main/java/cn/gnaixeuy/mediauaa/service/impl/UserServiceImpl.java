@@ -1,6 +1,6 @@
 package cn.gnaixeuy.mediauaa.service.impl;
 
-import cn.gnaixeuy.mediacommon.enmus.ExceptionType;
+import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediauaa.entity.User;
 import cn.gnaixeuy.mediauaa.repository.UserRepository;
@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -32,12 +31,12 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = this.userRepository.findByUserPhone(username);
         if (user.isEmpty()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
-        log.info("从数据库加载用户信息: " + user);
         return user.get();
     }
 
@@ -51,11 +50,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @Override
-    public Mono<UserDetails> findByUsername(String username) {
-        return Mono.just(this.loadUserByUsername(username));
     }
 
 }
