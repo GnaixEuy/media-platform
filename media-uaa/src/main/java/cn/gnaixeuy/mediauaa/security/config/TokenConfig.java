@@ -5,15 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -57,7 +55,10 @@ public class TokenConfig {
         service.setSupportRefreshToken(true);
         service.setTokenStore(tokenStore);
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Collections.singletonList(accessTokenConverter));
+        List<TokenEnhancer> tokenEnhancers = new ArrayList<>();
+        tokenEnhancers.add(accessTokenConverter);
+        tokenEnhancers.add(new MyTokenEnhancer());
+        tokenEnhancerChain.setTokenEnhancers(tokenEnhancers);
         service.setTokenEnhancer(tokenEnhancerChain);
         return service;
     }

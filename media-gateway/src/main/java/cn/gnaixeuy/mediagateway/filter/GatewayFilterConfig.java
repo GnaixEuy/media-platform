@@ -127,6 +127,7 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
         byte[] bits = json.toString().getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(bits);
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        log.error("进这里了");
         //指定编码，否则在浏览器中会中文乱码
         response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
         return response.writeWith(Mono.just(buffer));
