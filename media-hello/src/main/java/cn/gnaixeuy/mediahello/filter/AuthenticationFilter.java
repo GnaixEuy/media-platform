@@ -37,13 +37,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("json-token");
-        System.out.println(token);
         if (StringUtils.isNotBlank(token)) {
             String json = EncryptUtil.decodeUTF8StringBase64(token);
             JSONObject jsonObject = JSON.parseObject(json);
             //获取用户身份信息、权限信息
             String principal = jsonObject.getString("principal");
-            System.out.println(principal);
             User user = JSON.parseObject(principal, User.class);
             JSONArray tempJsonArray = jsonObject.getJSONArray("authorities");
             String[] authorities = tempJsonArray.toArray(new String[0]);

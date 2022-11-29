@@ -29,7 +29,7 @@ public class TeacherController {
      * 老师权限
      */
     @GetMapping("/math/grade")
-    @PreAuthorize("hasAuthority('teacher')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Object rs() {
         List<Map<String, Object>> maps = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {

@@ -1,6 +1,7 @@
 package cn.gnaixeuy.mediagateway.filter;
 
 import cn.gnaixeuy.mediacommon.utils.EncryptUtil;
+import cn.gnaixeuy.mediagateway.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
@@ -13,6 +14,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -22,6 +24,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +41,9 @@ import java.util.Map;
 @Component
 @Slf4j
 public class GatewayFilterConfig implements GlobalFilter, Ordered {
-
-
-    @Autowired
     private TokenStore tokenStore;
+
+    private UserService userService;
 
 
     @Override
@@ -64,10 +66,15 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
             Map<String, Object> additionalInformation = oAuth2AccessToken.getAdditionalInformation();
             //取出用户身份信息
             String principal = MapUtils.getString(additionalInformation, "user_name");
+            UserDetails userDetails = this.userService.loadUserByUsername(principal);
             //获取用户权限
-            List<String> authorities = (List<String>) additionalInformation.get("authorities");
+            List<String> authorities = new ArrayList<>(userDetails.getAuthorities().size());
+            userDetails.getAuthorities().forEach(item -> {
+                authorities.add(item.getAuthority());
+            });
+            System.out.println(authorities);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("principal", principal);
+            jsonObject.put("principal", userDetails);
             jsonObject.put("authorities", authorities);
             //给header里面添加值
             String base64 = EncryptUtil.encodeUTF8StringBase64(jsonObject.toJSONString());
@@ -78,8 +85,6 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
             log.info("无效的token: {}", token);
             return invalidTokenMono(exchange);
         }
-
-
     }
 
 
@@ -131,5 +136,15 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
     @Override
     public int getOrder() {
         return 0;
+    }
+
+    @Autowired
+    public void setTokenStore(TokenStore tokenStore) {
+        this.tokenStore = tokenStore;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

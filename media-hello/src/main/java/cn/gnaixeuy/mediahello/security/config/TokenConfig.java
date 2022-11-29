@@ -11,7 +11,6 @@ public class TokenConfig {
 
     private static final String SIGNING_KEY = "uaa";
 
-
     @Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
@@ -23,4 +22,5 @@ public class TokenConfig {
         converter.setSigningKey(SIGNING_KEY);
         return converter;
     }
+    
 }

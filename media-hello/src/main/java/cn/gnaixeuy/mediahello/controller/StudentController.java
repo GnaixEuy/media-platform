@@ -28,7 +28,7 @@ public class StudentController {
      * 老师权限或学生权限
      */
     @GetMapping("/grade")
-    @PreAuthorize("hasAnyAuthority('teacher','student')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
     public Object rs(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         map.put("张三", 100);
