@@ -72,7 +72,6 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
             userDetails.getAuthorities().forEach(item -> {
                 authorities.add(item.getAuthority());
             });
-            System.out.println(authorities);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("principal", userDetails);
             jsonObject.put("authorities", authorities);

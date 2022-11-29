@@ -1,4 +1,4 @@
-package cn.gnaixeuy.mediahello.security.config;
+package cn.gnaixeuy.mediauser.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,5 +22,5 @@ public class TokenConfig {
         converter.setSigningKey(SIGNING_KEY);
         return converter;
     }
-    
+
 }

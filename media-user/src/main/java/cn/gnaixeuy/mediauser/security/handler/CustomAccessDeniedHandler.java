@@ -1,4 +1,4 @@
-package cn.gnaixeuy.mediahello.security.handler;
+package cn.gnaixeuy.mediauser.security.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.http.MediaType;
