@@ -1,17 +1,11 @@
 server:
-  port: 9000
+  port: 6666
 spring:
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: school-server
-          uri: lb://school-server
-          predicates:
-            - Path=/api/school/**
-          filters:
-            - RewritePath=/api/school/(?<segment>.*),/$\{segment}
         - id: uaa-server
           uri: lb://uaa-server
           predicates:
@@ -22,6 +16,12 @@ spring:
           uri: lb://user-server
           predicates:
             - Path=/api/user/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: video-server
+          uri: lb://video-server
+          predicates:
+            - Path=/api/video/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
   jpa:

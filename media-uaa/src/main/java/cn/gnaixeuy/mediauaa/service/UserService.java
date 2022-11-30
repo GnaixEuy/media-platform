@@ -1,5 +1,6 @@
 package cn.gnaixeuy.mediauaa.service;
 
+import cn.gnaixeuy.mediacommon.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -13,4 +14,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 public interface UserService extends UserDetailsService {
+
+    /**
+     * 获取去当前登录用户的信息
+     *
+     * @return user dto
+     */
+    UserDto getCurrentUserInfo();
+
 }

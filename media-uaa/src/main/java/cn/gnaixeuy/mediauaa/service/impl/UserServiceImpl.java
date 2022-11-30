@@ -1,8 +1,10 @@
 package cn.gnaixeuy.mediauaa.service.impl;
 
+import cn.gnaixeuy.mediacommon.dto.UserDto;
 import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediauaa.entity.User;
+import cn.gnaixeuy.mediauaa.mapper.UserMapper;
 import cn.gnaixeuy.mediauaa.repository.UserRepository;
 import cn.gnaixeuy.mediauaa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,9 +43,12 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
-    public User getCurrentUserEntity() {
+    private User getCurrentUserEntity() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("获取用户请求头信息： " + authentication);
+        System.out.println("------------------------");
+        System.out.println(authentication.getName());
+        System.out.println("------------------------");
         return (User) this.loadUserByUsername(authentication.getName());
     }
 
@@ -50,6 +56,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    /**
+     * 获取去当前登录用户的信息
+     *
+     * @return user dto
+     */
+    @Override
+    public UserDto getCurrentUserInfo() {
+        return this.userMapper.entity2Dto(this.getCurrentUserEntity());
+    }
+
+
+    @Autowired
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
 }

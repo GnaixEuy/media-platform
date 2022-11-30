@@ -1,8 +1,8 @@
-package cn.gnaixeuy.mediauser.filter;
+package cn.gnaixeuy.mediafile.security.filter;
 
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.utils.EncryptUtil;
-import cn.gnaixeuy.mediauser.entity.User;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

@@ -1,5 +1,7 @@
-package cn.gnaixeuy.mediauser.entity;
+package cn.gnaixeuy.mediafile.entity;
 
+import cn.gnaixeuy.mediacommon.entity.BaseEntity;
+import cn.gnaixeuy.mediacommon.entity.Role;
 import cn.gnaixeuy.mediacommon.enums.UserGender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -38,8 +40,6 @@ public class User extends BaseEntity {
     private Boolean locked = false;
 
     private Boolean enabled = true;
-
-    private String userCity = "默认城市";
 
     private String lastLoginIp;
 

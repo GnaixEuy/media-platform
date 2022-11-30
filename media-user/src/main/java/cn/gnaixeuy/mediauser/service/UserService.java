@@ -20,5 +20,5 @@ public interface UserService {
      * @return userDto
      */
     UserDto getUserDtoByUserId(String id);
-
+    
 }

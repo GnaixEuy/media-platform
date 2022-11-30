@@ -4,6 +4,7 @@ import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediacommon.vo.user.UserVo;
 import cn.gnaixeuy.mediauser.mapper.UserMapper;
 import cn.gnaixeuy.mediauser.service.UserService;
+import cn.gnaixeuy.mediauser.vo.UserInfoExResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +30,17 @@ public class UserController {
     private UserMapper userMapper;
 
     @GetMapping(value = {"/info/{id}"})
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
     public ResponseResult<UserVo> infoById(@PathVariable String id) {
-        return ResponseResult.success(
-                this.userMapper.dto2Vo(this.userService.getUserDtoByUserId(id))
-        );
+        return ResponseResult.success(this.userMapper.dto2Vo(this.userService.getUserDtoByUserId(id)));
+    }
+
+    @GetMapping(value = {"/info/detail/{id}"})
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public ResponseResult<UserInfoExResponse> detailInfoById(@PathVariable String id) {
+        UserVo userVo = this.userMapper.dto2Vo(this.userService.getUserDtoByUserId(id));
+        UserInfoExResponse userInfoExResponse = new UserInfoExResponse();
+        userInfoExResponse.setUser(userVo);
+        return ResponseResult.success(userInfoExResponse);
     }
 
 

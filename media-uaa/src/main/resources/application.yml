@@ -15,6 +15,7 @@ spring:
     sqlMigrationSeparator: __
     validateOnMigrate: true
     baselineOnMigrate: true
+    ignore-missing-migrations: true
 
 #????
 management:

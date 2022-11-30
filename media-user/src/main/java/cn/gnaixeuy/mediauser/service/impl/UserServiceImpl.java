@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
         return this.userMapper.entity2Dto(byId.get());
     }
 
-
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

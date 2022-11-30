@@ -1,4 +1,4 @@
-package cn.gnaixeuy.mediacommon.vo.user;
+package cn.gnaixeuy.mediacommon.dto;
 
 import cn.gnaixeuy.mediacommon.enums.UserGender;
 import lombok.AllArgsConstructor;
@@ -21,20 +21,18 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVo implements Serializable {
-    private String uid;
+public class UserDto implements Serializable {
+    private String id;
     private Date createdDateTime;
     private Date updatedDateTime;
     private String userPhone;
-    private String nickname;
-    private Date birth;
-    private UserGender gender;
+    private String userNickname;
+    private String password;
+    private Date userBirthday;
+    private UserGender userGender;
+    private String userCity;
+    private Boolean locked;
+    private Boolean enabled;
     private String lastLoginIp;
     private Date lastLoginTime;
-    private String city;
-
-    //个人简介
-    private String bio = "cao";
-    //头像
-    private String portrait = "http://blog.gnaixeuy.cn/wp-content/uploads/2021/04/cropped-srchttp-img.zcool_.cn-community-013cac57adc7dc0000012e7e85cfe0.jpg@900w_1l_2o_100sh.jpgreferhttp-img.zcool_.cnapp2002sizef999910000qa80n0g0nfmtjpeg-192x192.jpeg";
 }

@@ -1,8 +1,8 @@
-package cn.gnaixeuy.mediauser.mapper;
+package cn.gnaixeuy.mediauaa.mapper;
 
+import cn.gnaixeuy.mediacommon.dto.UserDto;
 import cn.gnaixeuy.mediacommon.vo.user.UserVo;
-import cn.gnaixeuy.mediauser.dto.UserDto;
-import cn.gnaixeuy.mediauser.entity.User;
+import cn.gnaixeuy.mediauaa.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

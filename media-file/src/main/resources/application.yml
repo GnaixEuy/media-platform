@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: file-server
+  jpa:
+    generate-ddl: false
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+  flyway:
+    enabled: true
+    ignore-missing-migrations: true
+server:
+  port: 8082
+
+
