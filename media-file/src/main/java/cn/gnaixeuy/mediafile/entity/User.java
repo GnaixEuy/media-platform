@@ -1,7 +1,6 @@
 package cn.gnaixeuy.mediafile.entity;
 
 import cn.gnaixeuy.mediacommon.entity.BaseEntity;
-import cn.gnaixeuy.mediacommon.entity.Role;
 import cn.gnaixeuy.mediacommon.enums.UserGender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

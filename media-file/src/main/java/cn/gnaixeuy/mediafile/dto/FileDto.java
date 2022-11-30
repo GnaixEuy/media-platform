@@ -1,14 +1,11 @@
-package cn.gnaixeuy.mediafile.entity;
+package cn.gnaixeuy.mediafile.dto;
 
 import cn.gnaixeuy.mediacommon.enums.FileType;
 import cn.gnaixeuy.mediafile.enums.FileStatus;
 import cn.gnaixeuy.mediafile.enums.Storage;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import java.util.Date;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -21,25 +18,27 @@ import javax.persistence.Enumerated;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 @Data
-@Entity
-public class File extends TraceableBaseEntity {
+public class FileDto {
+    private String id;
 
     private String name;
 
-    @Column(name = "file_key")
     private String key;
+
+    private String uri;
 
     private String ext;
 
-    private Integer size;
+    private Long size;
 
-    @Enumerated(EnumType.ORDINAL)
     private FileType type;
 
-    @Enumerated(EnumType.STRING)
     private Storage storage;
 
-    @Enumerated(EnumType.ORDINAL)
-    private FileStatus status = FileStatus.UPLOADING;
+    private FileStatus status;
 
+    private Date createdDateTime;
+
+    private Date updatedDateTime;
 }
+

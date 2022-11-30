@@ -18,10 +18,10 @@ spring:
             - Path=/api/user/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
-        - id: video-server
-          uri: lb://video-server
+        - id: file-server
+          uri: lb://file-server
           predicates:
-            - Path=/api/video/**
+            - Path=/api/file/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
   jpa:

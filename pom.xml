@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>media-uaa</module>
         <module>media-common</module>
+        <module>media-uaa</module>
         <module>media-gateway</module>
         <module>media-user</module>
         <module>media-file</module>

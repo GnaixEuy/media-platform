@@ -1,15 +1,17 @@
 package cn.gnaixeuy.mediafile.controller;
 
-import cn.gnaixeuy.mediacommon.entity.User;
-import cn.gnaixeuy.mediacommon.vo.ResponseResult;
-import cn.gnaixeuy.mediacommon.vo.user.UserVo;
-import cn.gnaixeuy.mediafile.client.UserFeignClient;
+import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
+import cn.gnaixeuy.mediafile.mapper.FileMapper;
+import cn.gnaixeuy.mediafile.mapper.FileUploadMapper;
+import cn.gnaixeuy.mediafile.service.FileService;
+import cn.gnaixeuy.mediafile.vo.FileUploadVo;
+import cn.gnaixeuy.mediafile.vo.FileVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -21,20 +23,40 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
+
 @RestController
-@RequestMapping(value = {"/file"})
+@RequestMapping("/file")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 public class FileController {
+    private FileService fileService;
 
-    private UserFeignClient userFeignClient;
+    private FileMapper fileMapper;
 
-    @GetMapping(value = {"/test"})
-    public ResponseResult<UserVo> test() {
-        return this.userFeignClient.getCurrentUserInfo(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+    private FileUploadMapper fileUploadMapper;
+
+    @PostMapping("/upload_init")
+    public FileUploadVo initUpload(@Validated @RequestBody FileUploadRequest fileUploadRequest) throws IOException {
+        return fileUploadMapper.toVo(fileService.initUpload(fileUploadRequest));
+    }
+
+    @PostMapping("/{id}/upload_finish")
+    public FileVo finishUpload(@PathVariable String id) {
+        return fileMapper.toVo(fileService.finishUpload(id));
     }
 
 
     @Autowired
-    public void setUserFeignClient(UserFeignClient userFeignClient) {
-        this.userFeignClient = userFeignClient;
+    public void setFileService(FileService fileService) {
+        this.fileService = fileService;
+    }
+
+    @Autowired
+    public void setFileMapper(FileMapper fileMapper) {
+        this.fileMapper = fileMapper;
+    }
+
+    @Autowired
+    public void setFileUploadMapper(FileUploadMapper fileUploadMapper) {
+        this.fileUploadMapper = fileUploadMapper;
     }
 }

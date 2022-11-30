@@ -27,7 +27,9 @@ public enum ExceptionType {
     USER_NOT_ENABLED(50001001, "用户未启用"),
     PHONE_VERIFICATION_EXIT(50083001, "手机验证码已存在"),
     USER_LOCKED(50001002, "用户被锁定"),
-    DATA_IS_EMPTY(50010001, "参数为空");
+    DATA_IS_EMPTY(50010001, "参数为空"),
+    FILE_NOT_FOUND(40403001, "文件不存在"),
+    FILE_NOT_PERMISSION(40303002, "当前用户无权限修改文件");
 
     private final Integer code;
     private final String message;
