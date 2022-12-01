@@ -15,8 +15,9 @@ import java.io.IOException;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 public interface StorageService {
-    FileUploadDto initFileUpload() throws IOException;
+    FileUploadDto initFileUpload(String hashCode) throws IOException;
 
     String getFileUri(String fileKey);
+
 }
 

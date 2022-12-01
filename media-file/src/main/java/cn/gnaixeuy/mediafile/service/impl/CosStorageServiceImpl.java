@@ -8,12 +8,17 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.auth.COSSigner;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
 import com.tencent.cloud.CosStsClient;
 import com.tencent.cloud.Response;
+import lombok.Data;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
@@ -32,6 +37,8 @@ import java.util.TreeMap;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
+@Data
+@Slf4j
 @Service(value = "COS")
 public class CosStorageServiceImpl implements StorageService {
 
@@ -48,10 +55,19 @@ public class CosStorageServiceImpl implements StorageService {
     private String region;
 
     @Override
-    public FileUploadDto initFileUpload() {
+    public FileUploadDto initFileUpload(String hashCode) {
+        COSClient cosClient = createCOSClient();
         try {
             Response response = CosStsClient.getCredential(getCosStsConfig());
+            URL url = cosClient.generatePresignedUrl(
+                    this.bucket,
+                    hashCode,
+                    new Date(System.currentTimeMillis() + 30 * 60 * 1000),
+                    HttpMethodName.PUT,
+                    new HashMap<>(),
+                    new HashMap<>());
             FileUploadDto fileUploadDto = new FileUploadDto();
+            fileUploadDto.setSignUrl(url.toString());
             fileUploadDto.setSecretId(response.credentials.tmpSecretId);
             fileUploadDto.setSecretKey(response.credentials.tmpSecretKey);
             fileUploadDto.setSessionToken(response.credentials.sessionToken);
@@ -61,6 +77,8 @@ public class CosStorageServiceImpl implements StorageService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new BizException(ExceptionType.INNER_ERROR);
+        } finally {
+            cosClient.shutdown();
         }
     }
 
@@ -125,5 +143,6 @@ public class CosStorageServiceImpl implements StorageService {
         clientConfig.setConnectionTimeout(30 * 1000);
         return new COSClient(cred, clientConfig);
     }
+
 }
 

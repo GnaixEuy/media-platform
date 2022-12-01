@@ -54,7 +54,7 @@ public class FileServiceImpl implements FileService {
         file.setUpdatedBy(this.getCurrentUserEntity());
         File savedFile = repository.save(file);
         // 通过接口获取STS令牌
-        FileUploadDto fileUploadDto = storageServices.get(getDefaultStorage().name()).initFileUpload();
+        FileUploadDto fileUploadDto = storageServices.get(getDefaultStorage().name()).initFileUpload(file.getKey());
 
         fileUploadDto.setKey(savedFile.getKey());
         fileUploadDto.setFileId(savedFile.getId());
