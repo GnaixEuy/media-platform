@@ -6,7 +6,6 @@ import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
 import cn.gnaixeuy.mediafile.mapper.FileMapper;
 import cn.gnaixeuy.mediafile.mapper.FileUploadMapper;
 import cn.gnaixeuy.mediafile.service.FileService;
-import cn.gnaixeuy.mediafile.vo.FileUploadVo;
 import cn.gnaixeuy.mediafile.vo.FileVo;
 import cn.gnaixeuy.mediafile.vo.UploadTokenResponse;
 import cn.gnaixeuy.mediafile.vo.UploadTokenTokensHeaders;
@@ -41,15 +40,16 @@ public class FileController {
 
     @PostMapping("/upload_init")
     //TODO  等待优化
-    public ResponseResult< HashMap<String, UploadTokenResponse>> initUpload(@Validated @RequestBody FileUploadRequest fileUploadRequest) throws IOException {
+    public ResponseResult<HashMap<String, UploadTokenResponse>> initUpload(@Validated @RequestBody FileUploadRequest fileUploadRequest) throws IOException {
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
         UploadTokenResponse uploadTokenResponse = new UploadTokenResponse();
+        uploadTokenResponse.setFileId(fileUploadDto.getFileId());
         uploadTokenResponse.setUploadUrl(fileUploadDto.getSignUrl());
-        uploadTokenResponse.setEffectUrl("test");
+        uploadTokenResponse.setEffectUrl(fileUploadDto.getKey());
         uploadTokenResponse.setHeaders(new UploadTokenTokensHeaders());
         HashMap<String, UploadTokenResponse> stringUploadTokenResponseHashMap = new HashMap<>();
-        stringUploadTokenResponseHashMap.put("tokens",uploadTokenResponse);
-        return ResponseResult.success( stringUploadTokenResponseHashMap);
+        stringUploadTokenResponseHashMap.put("tokens", uploadTokenResponse);
+        return ResponseResult.success(stringUploadTokenResponseHashMap);
     }
 
     @PostMapping("/{id}/upload_finish")

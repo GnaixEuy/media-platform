@@ -7,7 +7,7 @@ spring:
     nacos:
       server-addr: 127.0.0.1:8848
   flyway:
-    enabled: true
+    enabled: false
     ignore-missing-migrations: true
 server:
   port: 8082

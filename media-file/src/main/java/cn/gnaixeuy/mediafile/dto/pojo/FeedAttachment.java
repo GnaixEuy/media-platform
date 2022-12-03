@@ -1,4 +1,4 @@
-package cn.gnaixeuy.mediafile.vo;
+package cn.gnaixeuy.mediafile.dto.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
  * <p>项目： media-platform </p>
- * 创建日期： 2022/12/1
+ * 创建日期： 2022/12/2
  *
  * @author GnaixEuy
  * @version 1.0.0
@@ -17,12 +17,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UploadTokenResponse {
+public class FeedAttachment {
 
-    private String method = "PUT";
-    private String fileId;
-    private String uploadUrl;
-    private String effectUrl;
-    private UploadTokenTokensHeaders headers;
+    private Integer type;
+    private  String url;
+    private String cover;
+    private String gifCover;
+    private Integer duiration;
+    private Integer width;
+    private String height;
 
 }

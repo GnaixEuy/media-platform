@@ -46,12 +46,14 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException {
+        User currentUserEntity = this.getCurrentUserEntity();
+        fileUploadRequest.setKey("/" + currentUserEntity.getId() + "/" + System.currentTimeMillis() + "/" + fileUploadRequest.getKey() + "." + fileUploadRequest.getExt());
         // 创建File实体
         File file = mapper.createEntity(fileUploadRequest);
         file.setType(FileTypeTransformer.getFileTypeFromExt(fileUploadRequest.getExt()));
         file.setStorage(getDefaultStorage());
-        file.setCreatedBy(this.getCurrentUserEntity());
-        file.setUpdatedBy(this.getCurrentUserEntity());
+        file.setCreatedBy(currentUserEntity);
+        file.setUpdatedBy(currentUserEntity);
         File savedFile = repository.save(file);
         // 通过接口获取STS令牌
         FileUploadDto fileUploadDto = storageServices.get(getDefaultStorage().name()).initFileUpload(file.getKey());

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
  * <p>项目： media-platform </p>
- * 创建日期： 2022/12/1
+ * 创建日期： 2022/12/4
  *
  * @author GnaixEuy
  * @version 1.0.0
@@ -17,12 +17,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UploadTokenResponse {
+public class FeedVo {
 
-    private String method = "PUT";
-    private String fileId;
-    private String uploadUrl;
-    private String effectUrl;
-    private UploadTokenTokensHeaders headers;
+    private Integer type;
+    private String url;
+    private String cover;
+    private String gifCover;
+    private Integer duration;
+    private Integer width;
+    private Integer height;
 
 }

@@ -1,0 +1,9 @@
+spring:
+  flyway:
+    enabled: true
+    encoding: UTF-8
+    locations: classpath:db/migration
+    sqlMigrationPrefix: V
+    sqlMigrationSeparator: __
+    validateOnMigrate: true
+    baselineOnMigrate: true

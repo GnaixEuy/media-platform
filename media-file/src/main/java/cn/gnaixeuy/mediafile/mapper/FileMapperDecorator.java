@@ -30,7 +30,6 @@ public abstract class FileMapperDecorator implements FileMapper {
     @Override
     public FileDto toDto(File file) {
         FileDto fileDto = delegate.toDto(file);
-
         if (fileDto == null) {
             return null;
         }

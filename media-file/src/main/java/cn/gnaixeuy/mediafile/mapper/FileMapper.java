@@ -33,7 +33,7 @@ public interface FileMapper {
     File createEntity(FileUploadRequest fileUploadRequest);
 
     FileVo toVo(FileDto fileDto);
-
+    
     FileDto toDto(File file);
 
     File toEntity(FileDto fileDto);

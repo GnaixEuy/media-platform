@@ -11,6 +11,7 @@ package cn.gnaixeuy.mediacommon.enums;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 public enum FileType {
+    TEXT,
     AUDIO,
     IMAGE,
     VIDEO,

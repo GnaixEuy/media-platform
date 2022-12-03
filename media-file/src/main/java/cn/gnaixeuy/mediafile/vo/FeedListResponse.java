@@ -1,14 +1,17 @@
 package cn.gnaixeuy.mediafile.vo;
 
+import cn.gnaixeuy.mediafile.dto.pojo.FeedListList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
  * <p>项目： media-platform </p>
- * 创建日期： 2022/12/1
+ * 创建日期： 2022/12/4
  *
  * @author GnaixEuy
  * @version 1.0.0
@@ -17,12 +20,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UploadTokenResponse {
+public class FeedListResponse {
 
-    private String method = "PUT";
-    private String fileId;
-    private String uploadUrl;
-    private String effectUrl;
-    private UploadTokenTokensHeaders headers;
+    private List<FeedListList> list;
+    private Integer cursor;
+    private Integer count;
+    private boolean hasMore;
 
 }
