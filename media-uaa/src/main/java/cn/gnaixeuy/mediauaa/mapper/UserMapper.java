@@ -24,7 +24,7 @@ public interface UserMapper {
     UserDto entity2Dto(User user);
 
     @Mappings(value = {
-            @Mapping(target = "uid", source = "id"),
+            @Mapping(target = "id", source = "id"),
             @Mapping(target = "city", source = "userCity"),
             @Mapping(target = "nickname", source = "userNickname"),
             @Mapping(source = "userBirthday", target = "birth", dateFormat = "yyyy-MM-dd"),

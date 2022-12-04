@@ -1,10 +1,10 @@
 package cn.gnaixeuy.mediacommon.entity;
 
 import cn.gnaixeuy.mediacommon.enums.UserGender;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +18,16 @@ import java.util.List;
  * @version 1.0.0
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
-@Data
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
 
+    @Column(unique = true)
     private String userPhone;
 
     private String userNickname;
@@ -31,16 +36,31 @@ public class User extends BaseEntity {
 
     private Date userBirthday;
 
+    @Enumerated(EnumType.ORDINAL)
     private UserGender userGender;
 
     private Boolean locked = false;
 
     private Boolean enabled = true;
 
-    private String lastLoginIp;
+    private String userCity = "默认城市";
 
+
+    @Column(name = "user_profession")
+    private String profession;
+    @Column(name = "user_bio")
+    private String bio = "快来介绍你自己吧！";
+    @Column(name = "user_portrait")
+    private String portrait = "默认头像";
+
+    private String lastLoginIp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss ", timezone = "GMT+8")
     private Date lastLoginTime;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
 }

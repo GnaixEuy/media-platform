@@ -22,7 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserVo implements Serializable {
-    private String uid;
+    private String id;
     private Date createdDateTime;
     private Date updatedDateTime;
     private String userPhone;
@@ -37,4 +37,5 @@ public class UserVo implements Serializable {
     private String bio = "cao";
     //头像
     private String portrait = "http://blog.gnaixeuy.cn/wp-content/uploads/2021/04/cropped-srchttp-img.zcool_.cn-community-013cac57adc7dc0000012e7e85cfe0.jpg@900w_1l_2o_100sh.jpgreferhttp-img.zcool_.cnapp2002sizef999910000qa80n0g0nfmtjpeg-192x192.jpeg";
+    private String profession;
 }

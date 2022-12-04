@@ -1,16 +1,20 @@
 package cn.gnaixeuy.mediauser.service.impl;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.enums.ExceptionType;
+import cn.gnaixeuy.mediacommon.enums.UserGender;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediauser.dto.UserDto;
-import cn.gnaixeuy.mediauser.entity.User;
+import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
 import cn.gnaixeuy.mediauser.mapper.UserMapper;
 import cn.gnaixeuy.mediauser.repository.UserRepository;
 import cn.gnaixeuy.mediauser.service.UserService;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -44,6 +48,54 @@ public class UserServiceImpl implements UserService {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
         return this.userMapper.entity2Dto(byId.get());
+    }
+
+    @Override
+    public User getUserInfoByUserId(String id) {
+        Optional<User> byId = this.userRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new BizException(ExceptionType.USER_NOT_FOUND);
+        }
+        return byId.get();
+    }
+
+    @Override
+    public UserDto updateUserInfoById(String id, UserInfoUpdateRequest userInfoUpdateRequest) {
+        Optional<User> byId = this.userRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new BizException(ExceptionType.USER_NOT_FOUND);
+        }
+        User user = byId.get();
+        String bio = userInfoUpdateRequest.getBio();
+        Date birth = userInfoUpdateRequest.getBirth();
+        String city = userInfoUpdateRequest.getCity();
+        String nickname = userInfoUpdateRequest.getNickname();
+        UserGender gender = userInfoUpdateRequest.getGender();
+        String portrait = userInfoUpdateRequest.getPortrait();
+        String profession = userInfoUpdateRequest.getProfession();
+        if (StrUtil.isNotEmpty(bio)) {
+            user.setBio(bio);
+        }
+        if (birth != null) {
+            user.setUserBirthday(birth);
+        }
+        if (StrUtil.isNotEmpty(city)) {
+            user.setUserCity(city);
+        }
+        if (StrUtil.isNotEmpty(nickname)) {
+            user.setUserNickname(nickname);
+        }
+        if (gender != null) {
+            user.setUserGender(gender);
+        }
+        if (StrUtil.isNotEmpty(portrait)) {
+            user.setPortrait(portrait);
+        }
+        if (StrUtil.isNotEmpty(profession)) {
+            user.setProfession(profession);
+        }
+        User save = this.userRepository.save(user);
+        return this.userMapper.entity2Dto(save);
     }
 
     @Autowired

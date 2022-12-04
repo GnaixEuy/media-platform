@@ -1,16 +1,15 @@
 package cn.gnaixeuy.mediauser.controller;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
 import cn.gnaixeuy.mediauser.mapper.UserMapper;
 import cn.gnaixeuy.mediauser.service.UserService;
 import cn.gnaixeuy.mediauser.vo.UserInfoExResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -32,6 +31,17 @@ public class UserController {
     @GetMapping(value = {"/info/{id}"})
     public ResponseResult<UserVo> infoById(@PathVariable String id) {
         return ResponseResult.success(this.userMapper.dto2Vo(this.userService.getUserDtoByUserId(id)));
+    }
+
+
+    @PutMapping(value = {"/info/{id}"})
+    public ResponseResult<UserVo> updateInfo(@PathVariable String id, @RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
+        return ResponseResult.success(this.userMapper.dto2Vo(this.userService.updateUserInfoById(id, userInfoUpdateRequest)));
+    }
+
+    @GetMapping(value = {"/info/entity/{id}"})
+    public ResponseResult<User> getEntityInfoById(@PathVariable String id) {
+        return ResponseResult.success(this.userService.getUserInfoByUserId(id));
     }
 
     @GetMapping(value = {"/info/detail/{id}"})

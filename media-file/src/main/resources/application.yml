@@ -11,5 +11,3 @@ spring:
     ignore-missing-migrations: true
 server:
   port: 8082
-
-

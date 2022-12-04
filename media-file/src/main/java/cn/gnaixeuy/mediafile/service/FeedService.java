@@ -1,5 +1,6 @@
 package cn.gnaixeuy.mediafile.service;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediafile.dto.FeedDto;
 import cn.gnaixeuy.mediafile.dto.request.PublishFeedRequest;
 import cn.gnaixeuy.mediafile.vo.FeedListResponse;
@@ -26,5 +27,7 @@ public interface FeedService {
 
 
     FeedListResponse getHot(Integer cursor, Integer count);
+
+    FeedListResponse getUserWorksList(User createdBy, Integer cursor, Integer count);
 
 }

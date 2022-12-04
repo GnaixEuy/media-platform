@@ -1,6 +1,8 @@
 package cn.gnaixeuy.mediauser.service;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediauser.dto.UserDto;
+import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -20,5 +22,10 @@ public interface UserService {
      * @return userDto
      */
     UserDto getUserDtoByUserId(String id);
-    
+
+
+    User getUserInfoByUserId(String id);
+
+
+    UserDto updateUserInfoById(String id, UserInfoUpdateRequest userInfoUpdateRequest);
 }

@@ -1,6 +1,7 @@
 package cn.gnaixeuy.mediafile.entity;
 
 import cn.gnaixeuy.mediacommon.entity.BaseEntity;
+import cn.gnaixeuy.mediacommon.entity.User;
 import lombok.Data;
 
 import javax.persistence.FetchType;

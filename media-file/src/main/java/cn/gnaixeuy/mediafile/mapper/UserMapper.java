@@ -1,8 +1,8 @@
 package cn.gnaixeuy.mediafile.mapper;
 
 import cn.gnaixeuy.mediacommon.dto.UserDto;
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.vo.user.UserVo;
-import cn.gnaixeuy.mediafile.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -24,7 +24,7 @@ public interface UserMapper {
     UserDto entity2Dto(User user);
 
     @Mappings(value = {
-            @Mapping(target = "uid", source = "id"),
+            @Mapping(target = "id", source = "id"),
             @Mapping(target = "city", source = "userCity"),
             @Mapping(target = "nickname", source = "userNickname"),
             @Mapping(source = "userBirthday", target = "birth", dateFormat = "yyyy-MM-dd"),

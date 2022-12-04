@@ -1,6 +1,9 @@
 package cn.gnaixeuy.mediafile.repository;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediafile.entity.Feed;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +18,8 @@ import org.springframework.stereotype.Repository;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 @Repository
-public interface FeedRepository extends JpaRepository<Feed,String > {
+public interface FeedRepository extends JpaRepository<Feed, String> {
+
+    Page<Feed> findAllByCreatedBy(User createdBy, Pageable pageable);
+
 }

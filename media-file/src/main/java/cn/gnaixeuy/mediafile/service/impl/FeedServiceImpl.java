@@ -1,5 +1,6 @@
 package cn.gnaixeuy.mediafile.service.impl;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediafile.dto.FeedDto;
 import cn.gnaixeuy.mediafile.dto.pojo.FeedListList;
 import cn.gnaixeuy.mediafile.dto.pojo.FeedListListContent;
@@ -7,7 +8,6 @@ import cn.gnaixeuy.mediafile.dto.pojo.PublishFeedContentAttachments;
 import cn.gnaixeuy.mediafile.dto.request.PublishFeedRequest;
 import cn.gnaixeuy.mediafile.entity.Feed;
 import cn.gnaixeuy.mediafile.entity.File;
-import cn.gnaixeuy.mediafile.entity.User;
 import cn.gnaixeuy.mediafile.mapper.FeedMapper;
 import cn.gnaixeuy.mediafile.mapper.FileMapper;
 import cn.gnaixeuy.mediafile.mapper.UserMapper;
@@ -90,15 +90,30 @@ public class FeedServiceImpl implements FeedService {
     public FeedListResponse getHot(Integer cursor, Integer count) {
         Page<Feed> feedPage = this.feedRepository.findAll(
                 PageRequest.of(cursor, count, Sort.by("createdDateTime").ascending()));
+        return this.dealWithFeedList(feedPage);
+    }
+
+    @Override
+    public FeedListResponse getUserWorksList(cn.gnaixeuy.mediacommon.entity.User createdBy, Integer cursor, Integer count) {
+        Page<Feed> feedPage = this.feedRepository.findAllByCreatedBy(createdBy,
+                PageRequest.of(cursor, count, Sort.by("createdDateTime").ascending()));
+        return this.dealWithFeedList(feedPage);
+    }
+
+    private User getCurrentUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+
+    private FeedListResponse dealWithFeedList(Page<Feed> feedPage) {
         FeedListResponse feedListResponse = new FeedListResponse();
         List<FeedDto> contentDto = feedPage.getContent()
                 .stream()
                 .map(this.feedMapper::feedToFeedDto)
                 .collect(Collectors.toList());
-
         List<FeedListList> feedList = new ArrayList<>(contentDto.size());
         contentDto.forEach(item -> {
-            System.out.println(item);
+//            System.out.println(item);
             FeedListList feedInfo = new FeedListList();
             feedInfo.setId(item.getId());
             feedInfo.setType(item.getType().toString());
@@ -122,10 +137,6 @@ public class FeedServiceImpl implements FeedService {
         });
         feedListResponse.setList(feedList);
         return feedListResponse;
-    }
-
-    private User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 

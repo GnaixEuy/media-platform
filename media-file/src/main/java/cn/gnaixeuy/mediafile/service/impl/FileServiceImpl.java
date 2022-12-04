@@ -1,5 +1,6 @@
 package cn.gnaixeuy.mediafile.service.impl;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediacommon.utils.FileTypeTransformer;
@@ -7,7 +8,6 @@ import cn.gnaixeuy.mediafile.dto.FileDto;
 import cn.gnaixeuy.mediafile.dto.FileUploadDto;
 import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
 import cn.gnaixeuy.mediafile.entity.File;
-import cn.gnaixeuy.mediafile.entity.User;
 import cn.gnaixeuy.mediafile.enums.FileStatus;
 import cn.gnaixeuy.mediafile.enums.Storage;
 import cn.gnaixeuy.mediafile.mapper.FileMapper;

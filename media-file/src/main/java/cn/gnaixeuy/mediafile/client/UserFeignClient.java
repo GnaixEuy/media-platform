@@ -1,6 +1,7 @@
 package cn.gnaixeuy.mediafile.client;
 
 import cn.gnaixeuy.mediacommon.config.FeignConfig;
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediacommon.vo.user.UserVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,5 +23,8 @@ public interface UserFeignClient {
 
     @GetMapping(value = {"/user/info/{id}"})
     ResponseResult<UserVo> getCurrentUserInfo(@PathVariable(value = "id") String id);
+
+    @GetMapping(value = {"/user/info/entity/{id}"})
+    ResponseResult<User> getUserInfoById(@PathVariable(value = "id") String id);
 
 }

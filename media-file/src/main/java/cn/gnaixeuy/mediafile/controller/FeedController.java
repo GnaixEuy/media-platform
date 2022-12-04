@@ -1,6 +1,8 @@
 package cn.gnaixeuy.mediafile.controller;
 
+import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
+import cn.gnaixeuy.mediafile.client.UserFeignClient;
 import cn.gnaixeuy.mediafile.dto.FeedDto;
 import cn.gnaixeuy.mediafile.dto.request.PublishFeedRequest;
 import cn.gnaixeuy.mediafile.service.FeedService;
@@ -24,6 +26,8 @@ public class FeedController {
 
     private FeedService feedService;
 
+    private UserFeignClient userFeignClient;
+
     @PostMapping(value = {"/publish"})
     public ResponseResult<FeedDto> publicFeed(@RequestBody PublishFeedRequest publishFeedRequest) {
         return ResponseResult.success(this.feedService.publicVideoFeed(publishFeedRequest));
@@ -34,9 +38,24 @@ public class FeedController {
         return ResponseResult.success(this.feedService.getHot(cursor, count));
     }
 
+    @GetMapping(value = {"/user/timeline/{uid}/{cursor}/{count}"})
+    public ResponseResult<FeedListResponse> getUserWorksList(@PathVariable String uid, @PathVariable Integer cursor, @PathVariable Integer count) {
+        ResponseResult<User> userInfoById = this.userFeignClient.getUserInfoById(uid);
+        if (userInfoById.getCode() == 200) {
+            User user = userInfoById.getData();
+            return ResponseResult.success(this.feedService.getUserWorksList(user, cursor, count));
+        }
+        return ResponseResult.error(null);
+    }
+
+
     @Autowired
     public void setFeedService(FeedService feedService) {
         this.feedService = feedService;
     }
 
+    @Autowired
+    public void setUserFeignClient(UserFeignClient userFeignClient) {
+        this.userFeignClient = userFeignClient;
+    }
 }
