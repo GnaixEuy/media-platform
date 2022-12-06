@@ -1,6 +1,5 @@
-package cn.gnaixeuy.mediauser.vo;
+package cn.gnaixeuy.mediafeed.dto.pojo;
 
-import cn.gnaixeuy.mediacommon.vo.user.UserVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
  * <p>项目： media-platform </p>
- * 创建日期： 2022/11/30
+ * 创建日期： 2022/12/2
  *
  * @author GnaixEuy
  * @version 1.0.0
@@ -18,12 +17,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoExResponse {
-
-    private UserVo user;
-    private Integer followerCount = 0;
-    private Integer followingCount = 0;
-    private Integer likeCount = 0;
-    private String relation = "ccccc";
-
+public class PublishFeedContentAttachments {
+    private Integer type;
+    private String url;
+    private String cover;
+    private String gifCover;
+    private Integer duration;
+    private Integer width;
+    private Integer height;
 }

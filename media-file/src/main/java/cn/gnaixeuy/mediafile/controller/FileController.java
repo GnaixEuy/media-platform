@@ -1,5 +1,6 @@
 package cn.gnaixeuy.mediafile.controller;
 
+import cn.gnaixeuy.mediacommon.entity.File;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediafile.dto.FileUploadDto;
 import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
@@ -55,6 +56,12 @@ public class FileController {
     @PostMapping("/{id}/upload_finish")
     public FileVo finishUpload(@PathVariable String id) {
         return fileMapper.toVo(fileService.finishUpload(id));
+    }
+
+
+    @GetMapping(value = {"/getFileInfoByKey/{key}"})
+    public ResponseResult<File> getFileInfoByKey(@PathVariable String key) {
+        return ResponseResult.success(this.fileService.getFileEntityByKey(key));
     }
 
 

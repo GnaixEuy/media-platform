@@ -1,15 +1,18 @@
-package cn.gnaixeuy.mediauser.vo;
+package cn.gnaixeuy.mediafeed.dto.pojo;
 
-import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+
+import cn.gnaixeuy.mediafeed.vo.FeedVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
  * <p>项目： media-platform </p>
- * 创建日期： 2022/11/30
+ * 创建日期： 2022/12/4
  *
  * @author GnaixEuy
  * @version 1.0.0
@@ -18,12 +21,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoExResponse {
+public class FeedListListContent {
 
-    private UserVo user;
-    private Integer followerCount = 0;
-    private Integer followingCount = 0;
-    private Integer likeCount = 0;
-    private String relation = "ccccc";
+    private String text;
+    //    List<FeedListListContentTag> tag;
+//    List<FeedListListContentAt> at;
+    private List<FeedVo> attachments;
+//    FeedListListContentMusic music;
 
 }

@@ -1,9 +1,11 @@
-package cn.gnaixeuy.mediauser.vo;
+package cn.gnaixeuy.mediafeed.entity;
 
-import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+import cn.gnaixeuy.mediacommon.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -16,14 +18,18 @@ import lombok.NoArgsConstructor;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoExResponse {
+public class VideoContentAttachments extends BaseEntity {
 
-    private UserVo user;
-    private Integer followerCount = 0;
-    private Integer followingCount = 0;
-    private Integer likeCount = 0;
-    private String relation = "ccccc";
+    //TODO 待完成
+    private String url;
+    private String cover;
+    private String gifCover;
+    private Double duration;
+    private Integer width;
+    private Integer height;
+    private String type;
 
 }

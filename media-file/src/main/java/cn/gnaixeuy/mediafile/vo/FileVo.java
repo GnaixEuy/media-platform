@@ -1,9 +1,9 @@
 package cn.gnaixeuy.mediafile.vo;
 
+import cn.gnaixeuy.mediacommon.enums.FileStatus;
 import cn.gnaixeuy.mediacommon.enums.FileType;
+import cn.gnaixeuy.mediacommon.enums.Storage;
 import cn.gnaixeuy.mediacommon.vo.BaseVo;
-import cn.gnaixeuy.mediafile.enums.FileStatus;
-import cn.gnaixeuy.mediafile.enums.Storage;
 import lombok.Data;
 
 /**

@@ -1,7 +1,7 @@
 package cn.gnaixeuy.mediafile.mapper;
 
+import cn.gnaixeuy.mediacommon.entity.File;
 import cn.gnaixeuy.mediafile.dto.FileDto;
-import cn.gnaixeuy.mediafile.entity.File;
 import cn.gnaixeuy.mediafile.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

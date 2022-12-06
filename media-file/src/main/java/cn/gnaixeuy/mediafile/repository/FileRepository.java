@@ -1,6 +1,6 @@
 package cn.gnaixeuy.mediafile.repository;
 
-import cn.gnaixeuy.mediafile.entity.File;
+import cn.gnaixeuy.mediacommon.entity.File;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

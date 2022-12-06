@@ -1,8 +1,8 @@
 package cn.gnaixeuy.mediafile.mapper;
 
+import cn.gnaixeuy.mediacommon.entity.File;
 import cn.gnaixeuy.mediafile.dto.FileDto;
 import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
-import cn.gnaixeuy.mediafile.entity.File;
 import cn.gnaixeuy.mediafile.vo.FileVo;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
@@ -33,7 +33,7 @@ public interface FileMapper {
     File createEntity(FileUploadRequest fileUploadRequest);
 
     FileVo toVo(FileDto fileDto);
-    
+
     FileDto toDto(File file);
 
     File toEntity(FileDto fileDto);

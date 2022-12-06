@@ -15,6 +15,7 @@
         <module>media-gateway</module>
         <module>media-user</module>
         <module>media-file</module>
+        <module>media-feed</module>
     </modules>
 
     <properties>

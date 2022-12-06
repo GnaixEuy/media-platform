@@ -1,6 +1,7 @@
-package cn.gnaixeuy.mediafile.security.config;
+package cn.gnaixeuy.mediafeed.security.config;
 
-import cn.gnaixeuy.mediafile.security.handler.CustomAccessDeniedHandler;
+
+import cn.gnaixeuy.mediafeed.security.handler.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

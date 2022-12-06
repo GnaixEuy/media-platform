@@ -1,10 +1,10 @@
 package cn.gnaixeuy.mediafile.service;
 
+import cn.gnaixeuy.mediacommon.entity.File;
+import cn.gnaixeuy.mediacommon.enums.Storage;
 import cn.gnaixeuy.mediafile.dto.FileDto;
 import cn.gnaixeuy.mediafile.dto.FileUploadDto;
 import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
-import cn.gnaixeuy.mediafile.entity.File;
-import cn.gnaixeuy.mediafile.enums.Storage;
 
 import java.io.IOException;
 
@@ -26,4 +26,7 @@ public interface FileService {
     Storage getDefaultStorage();
 
     File getFileEntity(String id);
+
+    File getFileEntityByKey(String key);
+
 }

@@ -37,7 +37,7 @@ public class MyTokenEnhancer implements TokenEnhancer {
         additionalInfo.put("code", 200);
         additionalInfo.put("message", "登录成功");
         HashMap<String, Object> data = new HashMap<>();
-        data.put("uid", user.getId());
+        data.put("id", user.getId());
         data.put("token", accessToken.getValue());
         additionalInfo.put("data", data);
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
