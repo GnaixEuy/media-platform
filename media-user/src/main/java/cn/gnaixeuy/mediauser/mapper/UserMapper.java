@@ -28,7 +28,8 @@ public interface UserMapper {
             @Mapping(target = "city", source = "userCity"),
             @Mapping(target = "nickname", source = "userNickname"),
             @Mapping(source = "userBirthday", target = "birth", dateFormat = "yyyy-MM-dd"),
-            @Mapping(target = "gender", source = "userGender")
+            @Mapping(target = "gender", source = "userGender"),
+            @Mapping(target = "portrait",source = "portrait")
     })
     UserVo dto2Vo(UserDto userDto);
 

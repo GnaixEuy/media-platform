@@ -45,14 +45,12 @@ public class User extends BaseEntity {
 
     private String userCity = "默认城市";
 
-
     @Column(name = "user_profession")
     private String profession;
     @Column(name = "user_bio")
     private String bio = "快来介绍你自己吧！";
     @Column(name = "user_portrait")
     private String portrait = "默认头像";
-
     private String lastLoginIp;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss ", timezone = "GMT+8")
     private Date lastLoginTime;

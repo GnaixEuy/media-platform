@@ -9,6 +9,7 @@ import cn.gnaixeuy.mediauser.service.UserService;
 import cn.gnaixeuy.mediauser.vo.UserInfoExResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -27,6 +28,14 @@ public class UserController {
 
     private UserService userService;
     private UserMapper userMapper;
+
+
+    @GetMapping(value = {"/me"})
+    public ResponseResult<UserVo> me() {
+        return ResponseResult.success(this.userMapper.dto2Vo(
+                this.userService.getUserDtoByUserId(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId())
+        ));
+    }
 
     @GetMapping(value = {"/info/{id}"})
     public ResponseResult<UserVo> infoById(@PathVariable String id) {

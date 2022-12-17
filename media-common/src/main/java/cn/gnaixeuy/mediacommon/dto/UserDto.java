@@ -23,6 +23,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserDto implements Serializable {
     private String id;
+
+    private  String portrait;
     private Date createdDateTime;
     private Date updatedDateTime;
     private String userPhone;
