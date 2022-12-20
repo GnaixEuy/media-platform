@@ -3,6 +3,10 @@ package cn.gnaixeuy.mediauser.service;
 import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediauser.dto.UserDto;
 import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -28,4 +32,12 @@ public interface UserService {
 
 
     UserDto updateUserInfoById(String id, UserInfoUpdateRequest userInfoUpdateRequest);
+
+    Page<UserDto> search(Pageable pageable);
+
+    UserDto lockUserById(String id);
+
+    Boolean deleteUserById(String id);
+
+    List<UserDto> searchByConditions(String type, String condition);
 }

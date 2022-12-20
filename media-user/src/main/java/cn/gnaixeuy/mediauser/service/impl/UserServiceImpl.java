@@ -12,10 +12,14 @@ import cn.gnaixeuy.mediauser.service.UserService;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -96,6 +100,56 @@ public class UserServiceImpl implements UserService {
         }
         User save = this.userRepository.save(user);
         return this.userMapper.entity2Dto(save);
+    }
+
+    @Override
+    public Page<UserDto> search(Pageable pageable) {
+        return this.userRepository.findAll(pageable).map(this.userMapper::entity2Dto);
+    }
+
+    @Override
+    public UserDto lockUserById(String id) {
+        Optional<User> byId = this.userRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new BizException(ExceptionType.USER_NOT_FOUND);
+        }
+        User user = byId.get();
+        int i = this.userRepository.updateLockedById(!user.getLocked(), user.getId());
+        if (i != 1) {
+            throw new BizException(ExceptionType.USER_UPDATE_EXCEPTION);
+        }
+        return this.userMapper.entity2Dto(this.userRepository.findById(id).get());
+    }
+
+    @Override
+    public Boolean deleteUserById(String id) {
+        try {
+            this.userRepository.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public List<UserDto> searchByConditions(String type, String condition) {
+        List<User> list;
+        switch (type) {
+            case "id":
+                list = this.userRepository.findByIdContaining(condition);
+                break;
+            case "name":
+                System.out.println("匹配名字");
+                list = this.userRepository.findByUserNicknameContaining(condition);
+                break;
+            case "phone":
+                list = this.userRepository.findByUserPhoneContaining(condition);
+                break;
+            default:
+                list = this.userRepository.findByIdContainingOrUserNicknameContainingOrUserPhoneContaining(condition, condition, condition);
+        }
+        return list.stream().map(this.userMapper::entity2Dto).collect(Collectors.toList());
     }
 
     @Autowired

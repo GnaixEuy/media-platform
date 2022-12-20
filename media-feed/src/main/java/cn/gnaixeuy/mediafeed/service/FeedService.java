@@ -4,6 +4,8 @@ import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
 import cn.gnaixeuy.mediafeed.dto.request.PublishFeedRequest;
 import cn.gnaixeuy.mediafeed.vo.FeedListResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 /**
@@ -31,4 +33,5 @@ public interface FeedService {
 
     FeedListResponse getUserWorksList(User createdBy, Integer cursor, Integer count);
 
+    Page<FeedDto> getVideoListPage(Pageable pageable);
 }

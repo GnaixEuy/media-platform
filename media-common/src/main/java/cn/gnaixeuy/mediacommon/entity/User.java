@@ -52,6 +52,7 @@ public class User extends BaseEntity {
     @Column(name = "user_portrait")
     private String portrait = "默认头像";
     private String lastLoginIp;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss ", timezone = "GMT+8")
     private Date lastLoginTime;
 

@@ -32,6 +32,7 @@ public class UserVo implements Serializable {
     private String lastLoginIp;
     private Date lastLoginTime;
     private String city;
+    private Boolean locked;
 
     //个人简介
     private String bio = "cao";

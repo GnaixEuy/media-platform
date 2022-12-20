@@ -11,14 +11,17 @@ import cn.gnaixeuy.mediafeed.dto.pojo.PublishFeedContentAttachments;
 import cn.gnaixeuy.mediafeed.dto.request.PublishFeedRequest;
 import cn.gnaixeuy.mediafeed.entity.Feed;
 import cn.gnaixeuy.mediafeed.mapper.FeedMapper;
-import cn.gnaixeuy.mediafeed.mapper.UserMapper;
 import cn.gnaixeuy.mediafeed.repository.FeedRepository;
 import cn.gnaixeuy.mediafeed.service.FeedService;
 import cn.gnaixeuy.mediafeed.vo.FeedListResponse;
 import cn.gnaixeuy.mediafeed.vo.FeedVo;
+import cn.gnaixeuy.mediafile.dto.FileDto;
+import cn.gnaixeuy.mediafile.mapper.UserMapper;
+import cn.gnaixeuy.mediafile.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +50,8 @@ public class FeedServiceImpl implements FeedService {
     private UserMapper userMapper;
 
     private FileFeignClient fileFeignClient;
+
+    private Map<String, StorageService> storageServices;
 
 
     /**
@@ -70,8 +76,8 @@ public class FeedServiceImpl implements FeedService {
         File file = feedContentList.get(0);
         Feed feed = new Feed();
         User currentUser = this.getCurrentUser();
-        //TODO
         feed.setFile(file);
+        //TODO coverFile 前端修改后填进去
         feed.setCover(file);
         feed.setSize(file.getSize());
         feed.setCreatedBy(currentUser);
@@ -99,6 +105,19 @@ public class FeedServiceImpl implements FeedService {
         Page<Feed> feedPage = this.feedRepository.findAllByCreatedBy(createdBy,
                 PageRequest.of(cursor, count, Sort.by("createdDateTime").ascending()));
         return this.dealWithFeedList(feedPage);
+    }
+
+    @Override
+    public Page<FeedDto> getVideoListPage(Pageable pageable) {
+        Page<FeedDto> feedDtoPage = this.feedRepository.findAll(pageable).map(this.feedMapper::feedToFeedDto);
+        feedDtoPage.getContent().forEach(feedDto -> {
+            FileDto file = feedDto.getFile();
+            FileDto cover = feedDto.getCover();
+            cover.setUri(storageServices.get(cover.getStorage().name()).getFileUri(cover.getKey()));
+            file.setUri(storageServices.get(file.getStorage().name()).getFileUri(file.getKey()));
+
+        });
+        return feedDtoPage;
     }
 
     private User getCurrentUser() {
@@ -162,5 +181,10 @@ public class FeedServiceImpl implements FeedService {
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setStorageServices(Map<String, StorageService> storageServices) {
+        this.storageServices = storageServices;
     }
 }

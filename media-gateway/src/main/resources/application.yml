@@ -24,9 +24,8 @@ spring:
             - Path=/api/file/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
-        #暂时先放file 那边
         - id: feed-server
-          uri: lb://file-server
+          uri: lb://feed-server
           predicates:
             - Path=/api/feed/**
           filters:
