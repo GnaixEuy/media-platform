@@ -31,11 +31,12 @@ public class FeedListList {
     private Integer commentType;
     private Date createdDateTime;
     private UserVo user;
-    private Integer likeCount;
+    private Long likeCount;
     private Integer commentCount;
     private Integer shareCount;
     private Integer viewCount;
-    private boolean isFollow;
-    private boolean isLike;
+    private Boolean isFollow;
+
+    private Boolean isLike;
 
 }

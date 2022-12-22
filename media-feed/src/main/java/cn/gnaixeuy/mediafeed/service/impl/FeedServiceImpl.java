@@ -7,6 +7,7 @@ import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediafeed.client.FileFeignClient;
+import cn.gnaixeuy.mediafeed.client.LikeFeignClient;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
 import cn.gnaixeuy.mediafeed.dto.pojo.FeedListList;
 import cn.gnaixeuy.mediafeed.dto.pojo.FeedListListContent;
@@ -51,9 +52,8 @@ public class FeedServiceImpl implements FeedService {
     private FeedMapper feedMapper;
     private FeedRepository feedRepository;
     private UserMapper userMapper;
-
     private FileFeignClient fileFeignClient;
-
+    private LikeFeignClient likeFeignClient;
     private Map<String, StorageService> storageServices;
 
 
@@ -157,7 +157,6 @@ public class FeedServiceImpl implements FeedService {
                 .collect(Collectors.toList());
         List<FeedListList> feedList = new ArrayList<>(contentDto.size());
         contentDto.forEach(item -> {
-//            System.out.println(item);
             FeedListList feedInfo = new FeedListList();
             feedInfo.setId(item.getId());
             feedInfo.setType(item.getType().toString());
@@ -177,6 +176,17 @@ public class FeedServiceImpl implements FeedService {
             }}));
             feedInfo.setCreatedDateTime(item.getCreatedDateTime());
             feedInfo.setUser(this.userMapper.dto2Vo(item.getCreatedBy()));
+            ResponseResult<Long> feedLikeNumByFeedId = this.likeFeignClient.getFeedLikeNumByFeedId(feedInfo.getId());
+            if (feedLikeNumByFeedId.getCode() == 200) {
+                feedInfo.setLikeCount(feedLikeNumByFeedId.getData());
+            }
+            ResponseResult<Boolean> feedIsLikeByFeedIdAndUserId = this.likeFeignClient.getFeedIsLikeByFeedIdAndUserId(item.getCreatedBy().getId(), feedInfo.getId());
+            if (feedIsLikeByFeedIdAndUserId.getCode() == 200) {
+                feedInfo.setIsLike(feedIsLikeByFeedIdAndUserId.getData());
+            }
+            System.out.println("--------------------------------");
+            System.out.println(feedInfo.getIsLike());
+            System.out.println("--------------------------------");
             feedList.add(feedInfo);
         });
         feedListResponse.setList(feedList);
@@ -205,6 +215,11 @@ public class FeedServiceImpl implements FeedService {
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setLikeFeignClient(LikeFeignClient likeFeignClient) {
+        this.likeFeignClient = likeFeignClient;
     }
 
     @Autowired

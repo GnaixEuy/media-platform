@@ -42,6 +42,16 @@ public class LikeServiceImpl implements LikeService {
         return true;
     }
 
+    @Override
+    public Long getFeedLikeNum(String id) {
+        return this.likeRepository.countByFeedId(id);
+    }
+
+    @Override
+    public Boolean getFeedIsLikeByFeedIdAndUserId(String userId, String feedId) {
+        return this.likeRepository.existsByUserIdAndFeedId(userId, feedId);
+    }
+
 
     @Autowired
     public void setLikeRepository(LikeRepository likeRepository) {

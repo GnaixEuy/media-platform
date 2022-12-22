@@ -16,4 +16,7 @@ public interface LikeService {
 
     boolean likeById(String id, User user, boolean isLike);
 
+    Long getFeedLikeNum(String id);
+
+    Boolean getFeedIsLikeByFeedIdAndUserId(String userId, String feedId);
 }

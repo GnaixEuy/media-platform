@@ -5,10 +5,7 @@ import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.medialike.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -34,6 +31,17 @@ public class LikeController {
         } else {
             return ResponseResult.error("修改点赞状态失败");
         }
+    }
+
+
+    @GetMapping(value = {"/feed/likeNum/{id}"})
+    public ResponseResult<Long> getFeedLikeNumByFeedId(@PathVariable String id) {
+        return ResponseResult.success(this.likeService.getFeedLikeNum(id));
+    }
+
+    @GetMapping(value = {"/feed/isLike/{userId}/{feedId}"})
+    public ResponseResult<Boolean> getFeedIsLikeByFeedIdAndUserId(@PathVariable String userId, @PathVariable String feedId) {
+        return ResponseResult.success(this.likeService.getFeedIsLikeByFeedIdAndUserId(userId, feedId));
     }
 
     @Autowired
