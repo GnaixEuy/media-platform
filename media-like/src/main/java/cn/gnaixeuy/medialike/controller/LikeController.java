@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
@@ -33,7 +35,6 @@ public class LikeController {
         }
     }
 
-
     @GetMapping(value = {"/feed/likeNum/{id}"})
     public ResponseResult<Long> getFeedLikeNumByFeedId(@PathVariable String id) {
         return ResponseResult.success(this.likeService.getFeedLikeNum(id));
@@ -44,8 +45,14 @@ public class LikeController {
         return ResponseResult.success(this.likeService.getFeedIsLikeByFeedIdAndUserId(userId, feedId));
     }
 
+    @GetMapping(value = {"/feed/likedUserIds/{feedId}"})
+    public ResponseResult<List<String>> getLikedUserIdsByFeedId(@PathVariable String feedId) {
+        return null;
+    }
+
     @Autowired
     public void setLikeService(LikeService likeService) {
         this.likeService = likeService;
     }
+
 }

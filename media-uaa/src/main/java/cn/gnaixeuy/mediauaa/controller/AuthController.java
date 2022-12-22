@@ -2,11 +2,11 @@ package cn.gnaixeuy.mediauaa.controller;
 
 import cn.gnaixeuy.mediacommon.dto.UserDto;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
+import cn.gnaixeuy.mediauaa.dto.RegisterByPhoneRequest;
 import cn.gnaixeuy.mediauaa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -23,10 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private UserService userService;
+    private TokenEndpoint tokenEndpoint;
 
     @GetMapping(value = {"/getCurrentUserInfo"})
     public ResponseResult<UserDto> getCurrentUserInfo() {
         return ResponseResult.success(this.userService.getCurrentUserInfo());
+    }
+
+    @PostMapping(value = {"/register"})
+    public ResponseResult<UserDto> registerByPhone(@RequestBody RegisterByPhoneRequest registerByPhoneRequest) {
+        return ResponseResult.success(this.userService.registerByPhone(registerByPhoneRequest));
     }
 
     @Autowired

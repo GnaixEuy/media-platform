@@ -1,6 +1,7 @@
 package cn.gnaixeuy.mediauaa.service;
 
 import cn.gnaixeuy.mediacommon.dto.UserDto;
+import cn.gnaixeuy.mediauaa.dto.RegisterByPhoneRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -22,4 +23,5 @@ public interface UserService extends UserDetailsService {
      */
     UserDto getCurrentUserInfo();
 
+    UserDto registerByPhone(RegisterByPhoneRequest registerByPhoneRequest);
 }
