@@ -32,7 +32,7 @@ public class ResponseResult<T> implements Serializable {
     }
 
     public static <T> ResponseResult<T> error(String message) {
-        return new ResponseResult<>(503, message, null);
+        return new ResponseResult<>(500, message, null);
     }
 
     public static ResponseResult createInstance() {

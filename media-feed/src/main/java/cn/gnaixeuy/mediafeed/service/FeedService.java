@@ -28,10 +28,13 @@ public interface FeedService {
      */
     FeedDto publicVideoFeed(PublishFeedRequest publishFeedRequest);
 
-
     FeedListResponse getHot(Integer cursor, Integer count);
 
     FeedListResponse getUserWorksList(User createdBy, Integer cursor, Integer count);
 
     Page<FeedDto> getVideoListPage(Pageable pageable);
+
+    boolean lockVideoById(String id);
+
+    boolean deleteVideoById(String id);
 }

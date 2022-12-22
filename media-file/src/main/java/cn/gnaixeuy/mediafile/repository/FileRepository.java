@@ -21,4 +21,6 @@ public interface FileRepository extends JpaRepository<File, String> {
 
     Optional<File> findByKey(String key);
 
+    Optional<File> findByNameContaining(String name);
+
 }

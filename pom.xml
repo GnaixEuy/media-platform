@@ -16,6 +16,7 @@
         <module>media-user</module>
         <module>media-file</module>
         <module>media-feed</module>
+        <module>media-like</module>
     </modules>
 
     <properties>

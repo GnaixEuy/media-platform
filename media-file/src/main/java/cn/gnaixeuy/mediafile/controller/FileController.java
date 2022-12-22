@@ -64,6 +64,11 @@ public class FileController {
         return ResponseResult.success(this.fileService.getFileEntityByKey(key));
     }
 
+    @GetMapping(value = {"/getFileInfoByName/{name}"})
+    public ResponseResult<File> getFileInfoByName(@PathVariable String name) {
+        return ResponseResult.success(this.fileService.getFileEntityByName(name));
+    }
+
 
     @Autowired
     public void setFileService(FileService fileService) {

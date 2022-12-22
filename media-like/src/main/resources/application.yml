@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: like-server
+  jpa:
+    generate-ddl: false
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+  flyway:
+    enabled: false
+    ignore-missing-migrations: true
+
+server:
+  port: 8087

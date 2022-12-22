@@ -23,4 +23,6 @@ public interface FileFeignClient {
     @GetMapping(value = {"/file/getFileInfoByKey/{key}"})
     ResponseResult<File> getFileByKey(@PathVariable(value = "key") String key);
 
+    @GetMapping(value = {"/getFileInfoByName/{name}"})
+    ResponseResult<File> getFileByName(@PathVariable(value = "name") String name);
 }

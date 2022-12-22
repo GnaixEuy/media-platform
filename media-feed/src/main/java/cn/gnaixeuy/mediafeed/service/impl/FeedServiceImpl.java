@@ -1,7 +1,10 @@
 package cn.gnaixeuy.mediafeed.service.impl;
 
+import cn.gnaixeuy.mediacommon.entity.Feed;
 import cn.gnaixeuy.mediacommon.entity.File;
 import cn.gnaixeuy.mediacommon.entity.User;
+import cn.gnaixeuy.mediacommon.enums.ExceptionType;
+import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediafeed.client.FileFeignClient;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
@@ -9,7 +12,6 @@ import cn.gnaixeuy.mediafeed.dto.pojo.FeedListList;
 import cn.gnaixeuy.mediafeed.dto.pojo.FeedListListContent;
 import cn.gnaixeuy.mediafeed.dto.pojo.PublishFeedContentAttachments;
 import cn.gnaixeuy.mediafeed.dto.request.PublishFeedRequest;
-import cn.gnaixeuy.mediafeed.entity.Feed;
 import cn.gnaixeuy.mediafeed.mapper.FeedMapper;
 import cn.gnaixeuy.mediafeed.repository.FeedRepository;
 import cn.gnaixeuy.mediafeed.service.FeedService;
@@ -30,6 +32,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +73,11 @@ public class FeedServiceImpl implements FeedService {
             ResponseResult<File> fileByKey = this.fileFeignClient.getFileByKey(item.getUrl());
             if (fileByKey.getCode() == 200) {
                 feedContentList.add(fileByKey.getData());
+                String[] split = fileByKey.getData().getName().split("\\.");
+                ResponseResult<File> fileByName = this.fileFeignClient.getFileByName(split[0]);
+                if (fileByName.getCode() == 200) {
+                    feedContentList.add(fileByName.getData());
+                }
             }
         });
         PublishFeedContentAttachments publishFeedContentAttachments = attachments.get(0);
@@ -78,7 +86,7 @@ public class FeedServiceImpl implements FeedService {
         User currentUser = this.getCurrentUser();
         feed.setFile(file);
         //TODO coverFile 前端修改后填进去
-        feed.setCover(file);
+        feed.setCover(feedContentList.get(1));
         feed.setSize(file.getSize());
         feed.setCreatedBy(currentUser);
         feed.setUpdatedBy(currentUser);
@@ -88,7 +96,8 @@ public class FeedServiceImpl implements FeedService {
         feed.setHeight(publishFeedContentAttachments.getHeight());
         feed.setDuration(publishFeedContentAttachments.getDuration());
         feed.setType(publishFeedContentAttachments.getType());
-        feed.setDevice(publishFeedRequest.getDevice());
+//        publishFeedRequest.getDevice()
+        feed.setDevice("iphone13");
 //        System.out.println(save);
         return this.feedMapper.feedToFeedDto(this.feedRepository.save(feed));
     }
@@ -118,6 +127,21 @@ public class FeedServiceImpl implements FeedService {
 
         });
         return feedDtoPage;
+    }
+
+    @Override
+    public boolean lockVideoById(String id) {
+        Optional<Feed> byId = this.feedRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new BizException(ExceptionType.FEED_NOT_FOUND);
+        }
+        return 1 == this.feedRepository.updateLockedById(!byId.get().isLocked(), id);
+    }
+
+    @Override
+    public boolean deleteVideoById(String id) {
+        this.feedRepository.deleteById(id);
+        return true;
     }
 
     private User getCurrentUser() {

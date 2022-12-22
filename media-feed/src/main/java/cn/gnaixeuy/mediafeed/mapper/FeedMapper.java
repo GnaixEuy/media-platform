@@ -1,7 +1,7 @@
 package cn.gnaixeuy.mediafeed.mapper;
 
+import cn.gnaixeuy.mediacommon.entity.Feed;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
-import cn.gnaixeuy.mediafeed.entity.Feed;
 import cn.gnaixeuy.mediafeed.vo.FeedVo;
 import org.mapstruct.*;
 

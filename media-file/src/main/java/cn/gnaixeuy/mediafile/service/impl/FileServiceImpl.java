@@ -104,6 +104,15 @@ public class FileServiceImpl implements FileService {
         return byKey.get();
     }
 
+    @Override
+    public File getFileEntityByName(String name) {
+        Optional<File> byKey = this.repository.findByNameContaining(name);
+        if (byKey.isEmpty()) {
+            throw new BizException(ExceptionType.FILE_NOT_FOUND);
+        }
+        return byKey.get();
+    }
+
 
     @Autowired
     public void setStorageServices(Map<String, StorageService> storageServices) {

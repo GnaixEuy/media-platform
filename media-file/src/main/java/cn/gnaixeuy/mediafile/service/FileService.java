@@ -29,4 +29,5 @@ public interface FileService {
 
     File getFileEntityByKey(String key);
 
+    File getFileEntityByName(String name);
 }

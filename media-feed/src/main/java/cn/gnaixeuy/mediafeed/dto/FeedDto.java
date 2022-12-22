@@ -1,6 +1,7 @@
 package cn.gnaixeuy.mediafeed.dto;
 
 import cn.gnaixeuy.mediacommon.dto.UserDto;
+import cn.gnaixeuy.mediacommon.entity.Feed;
 import cn.gnaixeuy.mediafile.dto.FileDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A DTO for the {@link cn.gnaixeuy.mediafeed.entity.Feed} entity
+ * A DTO for the {@link Feed} entity
  */
 @Data
 @AllArgsConstructor
@@ -38,4 +39,6 @@ public class FeedDto implements Serializable {
     private Integer duration;
     private String bio;
     private String device;
+    private boolean locked;
+
 }

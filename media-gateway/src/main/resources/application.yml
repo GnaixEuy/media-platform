@@ -30,6 +30,12 @@ spring:
             - Path=/api/feed/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: like-server
+          uri: lb://like-server
+          predicates:
+            - Path=/api/like/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
   jpa:
     generate-ddl: false
   flyway:

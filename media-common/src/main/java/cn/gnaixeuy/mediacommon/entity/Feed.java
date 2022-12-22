@@ -1,7 +1,5 @@
-package cn.gnaixeuy.mediafeed.entity;
+package cn.gnaixeuy.mediacommon.entity;
 
-import cn.gnaixeuy.mediacommon.entity.File;
-import cn.gnaixeuy.mediacommon.entity.TraceableBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,5 +54,8 @@ public class Feed extends TraceableBaseEntity {
 
     @Column(name = "device")
     private String device;
+
+    @Column(name = "locked")
+    private boolean locked;
 
 }
