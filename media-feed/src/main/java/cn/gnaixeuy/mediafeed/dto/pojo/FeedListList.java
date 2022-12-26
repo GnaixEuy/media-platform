@@ -32,7 +32,7 @@ public class FeedListList {
     private Date createdDateTime;
     private UserVo user;
     private Long likeCount;
-    private Integer commentCount;
+    private Long commentCount;
     private Integer shareCount;
     private Integer viewCount;
     private Boolean isFollow;

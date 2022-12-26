@@ -4,10 +4,7 @@ import cn.gnaixeuy.mediacomment.dto.AddCommentRequest;
 import cn.gnaixeuy.mediacomment.service.FeedCommentService;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -31,6 +28,11 @@ public class CommentController {
             return ResponseResult.success("评论成功");
         }
         return ResponseResult.error("评论失败");
+    }
+
+    @GetMapping(value = {"/getNumber/{feedId}"})
+    public ResponseResult<Long> getCommentNumberByFeedId(@PathVariable String feedId) {
+        return ResponseResult.success(this.feedCommentService.getCommentNumberByFeedId(feedId));
     }
 
     @Autowired

@@ -6,6 +6,7 @@ import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
+import cn.gnaixeuy.mediafeed.client.CommentFeignClient;
 import cn.gnaixeuy.mediafeed.client.FileFeignClient;
 import cn.gnaixeuy.mediafeed.client.LikeFeignClient;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
@@ -54,6 +55,7 @@ public class FeedServiceImpl implements FeedService {
     private UserMapper userMapper;
     private FileFeignClient fileFeignClient;
     private LikeFeignClient likeFeignClient;
+    private CommentFeignClient commentFeignClient;
     private Map<String, StorageService> storageServices;
 
 
@@ -184,9 +186,10 @@ public class FeedServiceImpl implements FeedService {
             if (feedIsLikeByFeedIdAndUserId.getCode() == 200) {
                 feedInfo.setIsLike(feedIsLikeByFeedIdAndUserId.getData());
             }
-            System.out.println("--------------------------------");
-            System.out.println(feedInfo.getIsLike());
-            System.out.println("--------------------------------");
+            ResponseResult<Long> commentNumberByFeedId = this.commentFeignClient.getCommentNumberByFeedId(feedInfo.getId());
+            if (commentNumberByFeedId.getCode() == 200) {
+                feedInfo.setCommentCount(commentNumberByFeedId.getData());
+            }
             feedList.add(feedInfo);
         });
         feedListResponse.setList(feedList);
@@ -220,6 +223,11 @@ public class FeedServiceImpl implements FeedService {
     @Autowired
     public void setLikeFeignClient(LikeFeignClient likeFeignClient) {
         this.likeFeignClient = likeFeignClient;
+    }
+
+    @Autowired
+    public void setCommentFeignClient(CommentFeignClient commentFeignClient) {
+        this.commentFeignClient = commentFeignClient;
     }
 
     @Autowired

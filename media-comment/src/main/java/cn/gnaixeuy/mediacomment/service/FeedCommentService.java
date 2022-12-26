@@ -14,4 +14,6 @@ import cn.gnaixeuy.mediacomment.dto.AddCommentRequest;
  */
 public interface FeedCommentService {
     boolean addComment(AddCommentRequest addCommentRequest);
+
+    Long getCommentNumberByFeedId(String feedId);
 }

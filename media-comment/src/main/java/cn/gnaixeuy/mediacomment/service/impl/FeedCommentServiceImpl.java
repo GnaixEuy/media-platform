@@ -43,4 +43,10 @@ public class FeedCommentServiceImpl implements FeedCommentService {
         FeedComment save = this.feedCommentRepository.save(feedComment);
         return save.getId() != null;
     }
+
+    @Override
+    public Long getCommentNumberByFeedId(String feedId) {
+        return this.feedCommentRepository.countByFeedId(feedId);
+    }
+    
 }
