@@ -1,12 +1,17 @@
 package cn.gnaixeuy.medialike.service.impl;
 
 import cn.gnaixeuy.mediacommon.entity.User;
+import cn.gnaixeuy.mediacommon.vo.ResponseResult;
+import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+import cn.gnaixeuy.medialike.client.UserFeignClient;
 import cn.gnaixeuy.medialike.entity.Like;
 import cn.gnaixeuy.medialike.repository.LikeRepository;
 import cn.gnaixeuy.medialike.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,6 +28,7 @@ import java.util.Optional;
 public class LikeServiceImpl implements LikeService {
 
     private LikeRepository likeRepository;
+    private UserFeignClient userFeignClient;
 
     @Override
     public boolean likeById(String id, User user, boolean isLike) {
@@ -52,9 +58,30 @@ public class LikeServiceImpl implements LikeService {
         return this.likeRepository.existsByUserIdAndFeedId(userId, feedId);
     }
 
+    @Override
+    public List<UserVo> getLikeUserListByFeedId(String id) {
+        List<Like> byFeedId = this.likeRepository.findByFeedId(id);
+        List<UserVo> userVoArrayList = new ArrayList<>(byFeedId.size());
+        byFeedId.forEach(item -> {
+            ResponseResult<UserVo> userInfoById = this.userFeignClient.getUserInfoById(item.getUserId());
+            if (userInfoById.getCode() == 200) {
+                UserVo data = userInfoById.getData();
+                //暂时不定义返回response，借用userVo的createdDateTime
+                data.setCreatedDateTime(item.getCreatedDateTime());
+                userVoArrayList.add(data);
+            }
+        });
+        return userVoArrayList;
+    }
+
 
     @Autowired
     public void setLikeRepository(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;
+    }
+
+    @Autowired
+    public void setUserFeignClient(UserFeignClient userFeignClient) {
+        this.userFeignClient = userFeignClient;
     }
 }

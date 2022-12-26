@@ -2,6 +2,7 @@ package cn.gnaixeuy.medialike.controller;
 
 import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
+import cn.gnaixeuy.mediacommon.vo.user.UserVo;
 import cn.gnaixeuy.medialike.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +34,11 @@ public class LikeController {
         } else {
             return ResponseResult.error("修改点赞状态失败");
         }
+    }
+
+    @GetMapping(value = {"/feed/likeThePeopleListByFeedId/{id}"})
+    public ResponseResult<List<UserVo>> likeThePeopleListByFeedId(@PathVariable String id) {
+        return ResponseResult.success(this.likeService.getLikeUserListByFeedId(id));
     }
 
     @GetMapping(value = {"/feed/likeNum/{id}"})

@@ -1,6 +1,9 @@
 package cn.gnaixeuy.medialike.service;
 
 import cn.gnaixeuy.mediacommon.entity.User;
+import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -19,4 +22,7 @@ public interface LikeService {
     Long getFeedLikeNum(String id);
 
     Boolean getFeedIsLikeByFeedIdAndUserId(String userId, String feedId);
+
+    List<UserVo> getLikeUserListByFeedId(String id);
+
 }

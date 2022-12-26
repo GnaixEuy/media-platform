@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -26,6 +27,7 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @Id
+    @Size(max = 32)
     @GeneratedValue(generator = "ksuid")
     @GenericGenerator(name = "ksuid", strategy = "cn.gnaixeuy.mediacommon.utils.KsuidIdentifierGenerator")
     private String id;

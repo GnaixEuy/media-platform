@@ -17,6 +17,7 @@
         <module>media-file</module>
         <module>media-feed</module>
         <module>media-like</module>
+        <module>media-comment</module>
     </modules>
 
     <properties>

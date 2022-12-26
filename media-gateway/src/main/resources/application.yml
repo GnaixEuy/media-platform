@@ -36,6 +36,12 @@ spring:
             - Path=/api/like/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: comment-server
+          uri: lb://comment-server
+          predicates:
+            - Path=/api/comment/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
   jpa:
     generate-ddl: false
   flyway:
