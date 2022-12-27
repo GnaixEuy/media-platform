@@ -2,6 +2,7 @@ package cn.gnaixeuy.mediacommon.entity;
 
 import cn.gnaixeuy.mediacommon.enums.UserGender;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ import java.util.List;
 @Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class User extends BaseEntity {
 
     @Column(unique = true)

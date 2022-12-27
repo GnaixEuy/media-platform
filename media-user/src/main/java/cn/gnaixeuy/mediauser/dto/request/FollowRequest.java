@@ -1,6 +1,6 @@
-package cn.gnaixeuy.mediauser.vo;
+package cn.gnaixeuy.mediauser.dto.request;
 
-import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+import cn.gnaixeuy.mediauser.enums.FollowType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
  * <p>项目： media-platform </p>
- * 创建日期： 2022/11/30
+ * 创建日期： 2022/12/27
  *
  * @author GnaixEuy
  * @version 1.0.0
@@ -18,12 +18,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoExResponse {
+public class FollowRequest {
+    private FollowType actionType;
 
-    private UserVo user;
-    private Long followerCount = 0L;
-    private Long followingCount = 0L;
-    private Long likeCount = 0L;
-    private String relation = "ccccc";
+    private String relationUid;
 
 }

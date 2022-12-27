@@ -5,8 +5,12 @@ import cn.gnaixeuy.mediacommon.enums.ExceptionType;
 import cn.gnaixeuy.mediacommon.enums.UserGender;
 import cn.gnaixeuy.mediacommon.exception.BizException;
 import cn.gnaixeuy.mediauser.dto.UserDto;
+import cn.gnaixeuy.mediauser.dto.request.FollowRequest;
 import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
+import cn.gnaixeuy.mediauser.entity.UserFollow;
+import cn.gnaixeuy.mediauser.enums.FollowType;
 import cn.gnaixeuy.mediauser.mapper.UserMapper;
+import cn.gnaixeuy.mediauser.repository.UserFollowRepository;
 import cn.gnaixeuy.mediauser.repository.UserRepository;
 import cn.gnaixeuy.mediauser.service.UserService;
 import cn.hutool.core.util.StrUtil;
@@ -14,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -37,6 +42,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private UserFollowRepository userFollowRepository;
 
 
     /**
@@ -152,6 +158,43 @@ public class UserServiceImpl implements UserService {
         return list.stream().map(this.userMapper::entity2Dto).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean follow(FollowRequest followRequest) {
+        System.out.println(followRequest);
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserFollow userFollow = new UserFollow();
+        userFollow.setUserId(currentUser.getId());
+        userFollow.setFollowId(followRequest.getRelationUid());
+        boolean existsByUserIdAndFollowId = this.userFollowRepository.existsByUserIdAndFollowId(userFollow.getUserId(), userFollow.getFollowId());
+        if (followRequest.getActionType() == FollowType.FOLLOW) {
+            if (existsByUserIdAndFollowId) {
+                return false;
+            }
+            this.userFollowRepository.save(userFollow);
+        } else {
+            if (!existsByUserIdAndFollowId) {
+                return false;
+            }
+            return 1 == this.userFollowRepository.deleteByFollowIdAndUserId(followRequest.getRelationUid(), currentUser.getId());
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean isFollowRelation(String userId, String followId) {
+        return this.userFollowRepository.existsByUserIdAndFollowId(userId, followId);
+    }
+
+    @Override
+    public Long getFollowerNumber(String id) {
+        return this.userFollowRepository.countByFollowId(id);
+    }
+
+    @Override
+    public Long getFollowingNumber(String id) {
+        return this.userFollowRepository.countByUserId(id);
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -160,5 +203,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setUserFollowRepository(UserFollowRepository userFollowRepository) {
+        this.userFollowRepository = userFollowRepository;
     }
 }

@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, String> {
+    @Query("select count(l) from Like l where l.userId = ?1")
+    long countByUserId(String userId);
+
     @Query("select (count(l) > 0) from Like l where l.userId = ?1 and l.feedId = ?2")
     boolean existsByUserIdAndFeedId(String userId, String feedId);
 

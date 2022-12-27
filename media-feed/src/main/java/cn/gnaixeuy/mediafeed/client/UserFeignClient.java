@@ -27,4 +27,8 @@ public interface UserFeignClient {
     @GetMapping(value = {"/user/info/entity/{id}"})
     ResponseResult<User> getUserInfoById(@PathVariable(value = "id") String id);
 
+
+    @GetMapping(value = {"/user/isFollowRelation/{userId}/{followId}"})
+    ResponseResult<Boolean> isFollowRelation(@PathVariable(value = "followId") String followId,
+                                             @PathVariable(value = "userId") String userId);
 }

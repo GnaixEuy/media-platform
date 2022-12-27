@@ -4,7 +4,9 @@ import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediacommon.vo.PageVo;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediacommon.vo.user.UserVo;
+import cn.gnaixeuy.mediauser.client.LikeFeignClient;
 import cn.gnaixeuy.mediauser.dto.UserDto;
+import cn.gnaixeuy.mediauser.dto.request.FollowRequest;
 import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
 import cn.gnaixeuy.mediauser.mapper.UserMapper;
 import cn.gnaixeuy.mediauser.service.UserService;
@@ -37,7 +39,24 @@ public class UserController {
 
     private UserService userService;
     private UserMapper userMapper;
+    private LikeFeignClient likeFeignClient;
 
+    @PostMapping(value = {"/follow"})
+    public ResponseResult<String> followUserById(@RequestBody FollowRequest followRequest) {
+        this.userService.follow(followRequest);
+        return ResponseResult.success("关注结果修改成功");
+    }
+
+    @GetMapping(value = {"/isFollowRelation/{userId}/{followId}"})
+    public ResponseResult<Boolean> isFollowRelation(@PathVariable String followId, @PathVariable String userId) {
+        return ResponseResult.success(this.userService.isFollowRelation(userId, followId));
+    }
+
+    @GetMapping(value = {"/isMyFollow/{followId}"})
+    public ResponseResult<Boolean> isMyFollow(@PathVariable String followId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseResult.success(this.userService.isFollowRelation(currentUser.getId(), followId));
+    }
 
     @GetMapping(value = {"/me"})
     public ResponseResult<UserVo> me() {
@@ -106,6 +125,9 @@ public class UserController {
         UserVo userVo = this.userMapper.dto2Vo(this.userService.getUserDtoByUserId(id));
         UserInfoExResponse userInfoExResponse = new UserInfoExResponse();
         userInfoExResponse.setUser(userVo);
+        userInfoExResponse.setFollowerCount(this.userService.getFollowerNumber(userVo.getId()));
+        userInfoExResponse.setFollowingCount(this.userService.getFollowingNumber(userVo.getId()));
+        userInfoExResponse.setLikeCount(this.likeFeignClient.getMyLikeFeedNumber(userVo.getId()).getData());
         return ResponseResult.success(userInfoExResponse);
     }
 
@@ -118,5 +140,10 @@ public class UserController {
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setLikeFeignClient(LikeFeignClient likeFeignClient) {
+        this.likeFeignClient = likeFeignClient;
     }
 }

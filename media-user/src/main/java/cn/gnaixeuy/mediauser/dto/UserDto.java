@@ -33,7 +33,6 @@ public class UserDto implements Serializable {
     private String userCity;
     private String bio;
     private String portrait;
-
     private String profession;
     private Boolean locked;
     private Boolean enabled;

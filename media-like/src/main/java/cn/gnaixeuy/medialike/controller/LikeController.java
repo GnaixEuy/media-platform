@@ -36,6 +36,12 @@ public class LikeController {
         }
     }
 
+    @GetMapping(value = {"/getMyLikeFeedNumber/{id}"})
+    public ResponseResult<Long> getMyLikeFeedNumber(@PathVariable String id) {
+        return ResponseResult.success(this.likeService.getMyLikeFeedNumber(id));
+    }
+
+
     @GetMapping(value = {"/feed/likeThePeopleListByFeedId/{id}"})
     public ResponseResult<List<UserVo>> likeThePeopleListByFeedId(@PathVariable String id) {
         return ResponseResult.success(this.likeService.getLikeUserListByFeedId(id));

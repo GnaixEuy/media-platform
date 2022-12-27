@@ -9,6 +9,7 @@ import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import cn.gnaixeuy.mediafeed.client.CommentFeignClient;
 import cn.gnaixeuy.mediafeed.client.FileFeignClient;
 import cn.gnaixeuy.mediafeed.client.LikeFeignClient;
+import cn.gnaixeuy.mediafeed.client.UserFeignClient;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
 import cn.gnaixeuy.mediafeed.dto.pojo.FeedListList;
 import cn.gnaixeuy.mediafeed.dto.pojo.FeedListListContent;
@@ -56,6 +57,7 @@ public class FeedServiceImpl implements FeedService {
     private FileFeignClient fileFeignClient;
     private LikeFeignClient likeFeignClient;
     private CommentFeignClient commentFeignClient;
+    private UserFeignClient userFeignClient;
     private Map<String, StorageService> storageServices;
 
 
@@ -72,11 +74,11 @@ public class FeedServiceImpl implements FeedService {
         //TODO 照片模式等待 2.0版本
         List<File> feedContentList = new ArrayList<>();
         attachments.forEach(item -> {
-            ResponseResult<File> fileByKey = this.fileFeignClient.getFileByKey(item.getUrl());
+            ResponseResult<File> fileByKey = this.fileFeignClient.getFileByKey(item.getUrl().replaceFirst("/", ""));
             if (fileByKey.getCode() == 200) {
                 feedContentList.add(fileByKey.getData());
                 String[] split = fileByKey.getData().getName().split("\\.");
-                ResponseResult<File> fileByName = this.fileFeignClient.getFileByName(split[0]);
+                ResponseResult<File> fileByName = this.fileFeignClient.getFileByName(split[0] + ".png");
                 if (fileByName.getCode() == 200) {
                     feedContentList.add(fileByName.getData());
                 }
@@ -98,9 +100,7 @@ public class FeedServiceImpl implements FeedService {
         feed.setHeight(publishFeedContentAttachments.getHeight());
         feed.setDuration(publishFeedContentAttachments.getDuration());
         feed.setType(publishFeedContentAttachments.getType());
-//        publishFeedRequest.getDevice()
-        feed.setDevice("iphone13");
-//        System.out.println(save);
+        feed.setDevice(publishFeedRequest.getDevice());
         return this.feedMapper.feedToFeedDto(this.feedRepository.save(feed));
     }
 
@@ -146,6 +146,7 @@ public class FeedServiceImpl implements FeedService {
         return true;
     }
 
+
     private User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
@@ -178,9 +179,6 @@ public class FeedServiceImpl implements FeedService {
             }}));
             feedInfo.setCreatedDateTime(item.getCreatedDateTime());
             feedInfo.setUser(this.userMapper.dto2Vo(item.getCreatedBy()));
-            System.out.println("--------------------------------");
-            System.out.println(feedInfo.getUser());
-            System.out.println("--------------------------------");
             ResponseResult<Long> feedLikeNumByFeedId = this.likeFeignClient.getFeedLikeNumByFeedId(feedInfo.getId());
             if (feedLikeNumByFeedId.getCode() == 200) {
                 feedInfo.setLikeCount(feedLikeNumByFeedId.getData());
@@ -192,6 +190,10 @@ public class FeedServiceImpl implements FeedService {
             ResponseResult<Long> commentNumberByFeedId = this.commentFeignClient.getCommentNumberByFeedId(feedInfo.getId());
             if (commentNumberByFeedId.getCode() == 200) {
                 feedInfo.setCommentCount(commentNumberByFeedId.getData());
+            }
+            ResponseResult<Boolean> followRelation = this.userFeignClient.isFollowRelation(item.getCreatedBy().getId(), getCurrentUser().getId());
+            if (followRelation.getCode() == 200) {
+                feedInfo.setIsFollow(followRelation.getData());
             }
             feedList.add(feedInfo);
         });
@@ -231,6 +233,11 @@ public class FeedServiceImpl implements FeedService {
     @Autowired
     public void setCommentFeignClient(CommentFeignClient commentFeignClient) {
         this.commentFeignClient = commentFeignClient;
+    }
+
+    @Autowired
+    public void setUserFeignClient(UserFeignClient userFeignClient) {
+        this.userFeignClient = userFeignClient;
     }
 
     @Autowired

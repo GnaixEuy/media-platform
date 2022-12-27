@@ -10,9 +10,12 @@ import cn.gnaixeuy.mediafile.vo.FileVo;
 import cn.gnaixeuy.mediafile.vo.UploadTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -41,7 +44,6 @@ public class FileController {
     //TODO  等待优化
     public ResponseResult<HashMap<String, UploadTokenResponse>> initUpload(@Validated @RequestBody FileUploadRequest fileUploadRequest) throws IOException {
         UploadTokenResponse uploadTokenResponse = fileService.initUpload(fileUploadRequest);
-        System.out.println(uploadTokenResponse);
         HashMap<String, UploadTokenResponse> stringUploadTokenResponseHashMap = new HashMap<>();
         stringUploadTokenResponseHashMap.put("tokens", uploadTokenResponse);
         return ResponseResult.success(stringUploadTokenResponseHashMap);
@@ -53,8 +55,11 @@ public class FileController {
     }
 
 
-    @GetMapping(value = {"/getFileInfoByKey/{key}"})
-    public ResponseResult<File> getFileInfoByKey(@PathVariable String key) {
+    @GetMapping(value = {"/getFileInfoByKey/{id}/**"})
+    public ResponseResult<File> getFileInfoByKey(HttpServletRequest request, @PathVariable String id) {
+        String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
+        String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+        String key = "/" + id + "/" + new AntPathMatcher().extractPathWithinPattern(bestMatchingPattern, path);
         return ResponseResult.success(this.fileService.getFileEntityByKey(key));
     }
 

@@ -74,6 +74,11 @@ public class LikeServiceImpl implements LikeService {
         return userVoArrayList;
     }
 
+    @Override
+    public Long getMyLikeFeedNumber(String id) {
+        return this.likeRepository.countByUserId(id);
+    }
+
 
     @Autowired
     public void setLikeRepository(LikeRepository likeRepository) {

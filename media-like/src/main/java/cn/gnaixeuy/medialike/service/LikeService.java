@@ -25,4 +25,5 @@ public interface LikeService {
 
     List<UserVo> getLikeUserListByFeedId(String id);
 
+    Long getMyLikeFeedNumber(String id);
 }

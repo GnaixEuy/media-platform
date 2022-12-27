@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EntityScan(value = {"cn.gnaixeuy.mediacommon"})
+@EntityScan(value = {"cn.gnaixeuy.mediacommon", "cn.gnaixeuy.mediauser"})
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication

@@ -2,6 +2,7 @@ package cn.gnaixeuy.mediauser.service;
 
 import cn.gnaixeuy.mediacommon.entity.User;
 import cn.gnaixeuy.mediauser.dto.UserDto;
+import cn.gnaixeuy.mediauser.dto.request.FollowRequest;
 import cn.gnaixeuy.mediauser.dto.request.UserInfoUpdateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,4 +41,12 @@ public interface UserService {
     Boolean deleteUserById(String id);
 
     List<UserDto> searchByConditions(String type, String condition);
+
+    boolean follow(FollowRequest followRequest);
+
+    Boolean isFollowRelation(String userId, String followId);
+
+    Long getFollowerNumber(String id);
+
+    Long getFollowingNumber(String id);
 }
