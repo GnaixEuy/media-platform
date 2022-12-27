@@ -25,4 +25,6 @@ public class UploadTokenResponse {
     private String effectUrl;
     private UploadTokenTokensHeaders headers;
 
+    private String photoResultUrl;
+
 }

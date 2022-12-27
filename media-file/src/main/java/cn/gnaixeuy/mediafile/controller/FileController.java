@@ -2,14 +2,12 @@ package cn.gnaixeuy.mediafile.controller;
 
 import cn.gnaixeuy.mediacommon.entity.File;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
-import cn.gnaixeuy.mediafile.dto.FileUploadDto;
 import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
 import cn.gnaixeuy.mediafile.mapper.FileMapper;
 import cn.gnaixeuy.mediafile.mapper.FileUploadMapper;
 import cn.gnaixeuy.mediafile.service.FileService;
 import cn.gnaixeuy.mediafile.vo.FileVo;
 import cn.gnaixeuy.mediafile.vo.UploadTokenResponse;
-import cn.gnaixeuy.mediafile.vo.UploadTokenTokensHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -42,12 +40,8 @@ public class FileController {
     @PostMapping("/upload_init")
     //TODO  等待优化
     public ResponseResult<HashMap<String, UploadTokenResponse>> initUpload(@Validated @RequestBody FileUploadRequest fileUploadRequest) throws IOException {
-        FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
-        UploadTokenResponse uploadTokenResponse = new UploadTokenResponse();
-        uploadTokenResponse.setFileId(fileUploadDto.getFileId());
-        uploadTokenResponse.setUploadUrl(fileUploadDto.getSignUrl());
-        uploadTokenResponse.setEffectUrl(fileUploadDto.getKey());
-        uploadTokenResponse.setHeaders(new UploadTokenTokensHeaders());
+        UploadTokenResponse uploadTokenResponse = fileService.initUpload(fileUploadRequest);
+        System.out.println(uploadTokenResponse);
         HashMap<String, UploadTokenResponse> stringUploadTokenResponseHashMap = new HashMap<>();
         stringUploadTokenResponseHashMap.put("tokens", uploadTokenResponse);
         return ResponseResult.success(stringUploadTokenResponseHashMap);
@@ -84,4 +78,5 @@ public class FileController {
     public void setFileUploadMapper(FileUploadMapper fileUploadMapper) {
         this.fileUploadMapper = fileUploadMapper;
     }
+
 }

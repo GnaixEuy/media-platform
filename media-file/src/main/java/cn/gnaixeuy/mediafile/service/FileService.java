@@ -3,8 +3,8 @@ package cn.gnaixeuy.mediafile.service;
 import cn.gnaixeuy.mediacommon.entity.File;
 import cn.gnaixeuy.mediacommon.enums.Storage;
 import cn.gnaixeuy.mediafile.dto.FileDto;
-import cn.gnaixeuy.mediafile.dto.FileUploadDto;
 import cn.gnaixeuy.mediafile.dto.request.FileUploadRequest;
+import cn.gnaixeuy.mediafile.vo.UploadTokenResponse;
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * @see <a href="https://github.com/GnaixEuy"> GnaixEuy的GitHub </a>
  */
 public interface FileService {
-    FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException;
+    UploadTokenResponse initUpload(FileUploadRequest fileUploadRequest) throws IOException;
 
     FileDto finishUpload(String id);
 

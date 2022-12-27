@@ -1,6 +1,7 @@
 package cn.gnaixeuy.mediauser.dto.request;
 
 import cn.gnaixeuy.mediacommon.enums.UserGender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class UserInfoUpdateRequest {
     private String nickname;
     private String portrait;
     private String bio;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     private UserGender gender;
     private String city;

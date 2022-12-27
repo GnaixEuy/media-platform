@@ -1,6 +1,9 @@
 package cn.gnaixeuy.mediacomment.service;
 
 import cn.gnaixeuy.mediacomment.dto.AddCommentRequest;
+import cn.gnaixeuy.mediacomment.dto.FeedCommentDto;
+
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -16,4 +19,8 @@ public interface FeedCommentService {
     boolean addComment(AddCommentRequest addCommentRequest);
 
     Long getCommentNumberByFeedId(String feedId);
+
+    List<FeedCommentDto> getCommentListByFeedId(String id);
+
+    boolean commentLike(String id);
 }

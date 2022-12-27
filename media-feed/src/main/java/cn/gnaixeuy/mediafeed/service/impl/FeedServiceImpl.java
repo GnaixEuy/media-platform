@@ -178,6 +178,9 @@ public class FeedServiceImpl implements FeedService {
             }}));
             feedInfo.setCreatedDateTime(item.getCreatedDateTime());
             feedInfo.setUser(this.userMapper.dto2Vo(item.getCreatedBy()));
+            System.out.println("--------------------------------");
+            System.out.println(feedInfo.getUser());
+            System.out.println("--------------------------------");
             ResponseResult<Long> feedLikeNumByFeedId = this.likeFeignClient.getFeedLikeNumByFeedId(feedInfo.getId());
             if (feedLikeNumByFeedId.getCode() == 200) {
                 feedInfo.setLikeCount(feedLikeNumByFeedId.getData());

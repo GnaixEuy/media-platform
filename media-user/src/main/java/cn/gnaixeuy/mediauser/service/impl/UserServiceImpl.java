@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
             user.setUserGender(gender);
         }
         if (StrUtil.isNotEmpty(portrait)) {
-            user.setPortrait(portrait);
+            user.setPortrait(portrait.substring(0, portrait.indexOf("?")));
         }
         if (StrUtil.isNotEmpty(profession)) {
             user.setProfession(profession);

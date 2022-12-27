@@ -1,10 +1,15 @@
 package cn.gnaixeuy.mediacomment.controller;
 
 import cn.gnaixeuy.mediacomment.dto.AddCommentRequest;
+import cn.gnaixeuy.mediacomment.dto.FeedCommentDto;
 import cn.gnaixeuy.mediacomment.service.FeedCommentService;
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -30,6 +35,22 @@ public class CommentController {
         return ResponseResult.error("评论失败");
     }
 
+    @PostMapping(value = {"/like/{id}"})
+    public ResponseResult<String> commentLike(@PathVariable String id) {
+        System.out.println(id);
+        this.feedCommentService.commentLike(id);
+        return null;
+    }
+
+    @GetMapping(value = {"/getCommentList/{id}"})
+    public ResponseResult<Map<String, List<FeedCommentDto>>> getCommentListByFeedId(@PathVariable String id) {
+        List<FeedCommentDto> commentListByFeedId = this.feedCommentService.getCommentListByFeedId(id);
+        commentListByFeedId.forEach(System.out::println);
+        Map<String, List<FeedCommentDto>> stringListHashMap = new HashMap<>();
+        stringListHashMap.put("commentList", commentListByFeedId);
+        return ResponseResult.success(stringListHashMap);
+    }
+
     @GetMapping(value = {"/getNumber/{feedId}"})
     public ResponseResult<Long> getCommentNumberByFeedId(@PathVariable String feedId) {
         return ResponseResult.success(this.feedCommentService.getCommentNumberByFeedId(feedId));
@@ -39,4 +60,5 @@ public class CommentController {
     public void setFeedCommentService(FeedCommentService feedCommentService) {
         this.feedCommentService = feedCommentService;
     }
+
 }

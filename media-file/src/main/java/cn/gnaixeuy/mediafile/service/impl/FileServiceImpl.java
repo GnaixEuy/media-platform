@@ -14,6 +14,8 @@ import cn.gnaixeuy.mediafile.mapper.FileMapper;
 import cn.gnaixeuy.mediafile.repository.FileRepository;
 import cn.gnaixeuy.mediafile.service.FileService;
 import cn.gnaixeuy.mediafile.service.StorageService;
+import cn.gnaixeuy.mediafile.vo.UploadTokenResponse;
+import cn.gnaixeuy.mediafile.vo.UploadTokenTokensHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -45,9 +47,10 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException {
+    public UploadTokenResponse initUpload(FileUploadRequest fileUploadRequest) throws IOException {
         User currentUserEntity = this.getCurrentUserEntity();
         fileUploadRequest.setKey("/" + currentUserEntity.getId() + "/" + System.currentTimeMillis() + "/" + fileUploadRequest.getKey() + "." + fileUploadRequest.getExt());
+        fileUploadRequest.setName(fileUploadRequest.getName().substring(fileUploadRequest.getName().lastIndexOf("/") + 1));
         // 创建File实体
         File file = mapper.createEntity(fileUploadRequest);
         file.setType(FileTypeTransformer.getFileTypeFromExt(fileUploadRequest.getExt()));
@@ -60,7 +63,14 @@ public class FileServiceImpl implements FileService {
 
         fileUploadDto.setKey(savedFile.getKey());
         fileUploadDto.setFileId(savedFile.getId());
-        return fileUploadDto;
+
+        UploadTokenResponse uploadTokenResponse = new UploadTokenResponse();
+        uploadTokenResponse.setFileId(fileUploadDto.getFileId());
+        uploadTokenResponse.setUploadUrl(fileUploadDto.getSignUrl());
+        uploadTokenResponse.setEffectUrl(fileUploadDto.getKey());
+        uploadTokenResponse.setHeaders(new UploadTokenTokensHeaders());
+        uploadTokenResponse.setPhotoResultUrl(this.storageServices.get(getDefaultStorage().name()).getFileUri(fileUploadDto.getKey()));
+        return uploadTokenResponse;
     }
 
     private User getCurrentUserEntity() {
