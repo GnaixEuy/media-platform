@@ -1,7 +1,6 @@
 package cn.gnaixeuy.mediafeed.controller;
 
 import cn.gnaixeuy.mediacommon.vo.ResponseResult;
-import cn.gnaixeuy.mediafeed.client.UserFeignClient;
 import cn.gnaixeuy.mediafeed.dto.FeedDto;
 import cn.gnaixeuy.mediafeed.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -25,13 +26,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/feed/admin")
 public class AdminVideoController {
     private FeedService feedService;
-    private UserFeignClient userFeignClient;
 
 
     @GetMapping(value = "/page")
     public ResponseResult<Page<FeedDto>> getVideoListPage(@PageableDefault(sort = {"createdDateTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
         Page<FeedDto> videoListPage = this.feedService.getVideoListPage(pageable);
-//        System.out.println(videoListPage.getContent());
         return ResponseResult.success(videoListPage);
     }
 
@@ -43,7 +42,6 @@ public class AdminVideoController {
         return ResponseResult.success("操作成功");
     }
 
-
     @DeleteMapping(value = {"/delete/{id}"})
     public ResponseResult<String> deleteVideoById(@PathVariable String id) {
         if (!this.feedService.deleteVideoById(id)) {
@@ -52,15 +50,14 @@ public class AdminVideoController {
         return ResponseResult.success("删除成功");
     }
 
+    @GetMapping(value = {"/search/{type}/{input}"})
+    public ResponseResult<List<FeedDto>> search(@PathVariable String type, @PathVariable String input) {
+        return ResponseResult.success(this.feedService.adminSearch(type, input));
+    }
 
     @Autowired
     public void setFeedService(FeedService feedService) {
         this.feedService = feedService;
-    }
-
-    @Autowired
-    public void setUserFeignClient(UserFeignClient userFeignClient) {
-        this.userFeignClient = userFeignClient;
     }
 
 }

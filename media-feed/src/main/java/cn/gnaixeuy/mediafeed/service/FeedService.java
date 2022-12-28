@@ -7,6 +7,8 @@ import cn.gnaixeuy.mediafeed.vo.FeedListResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
@@ -37,4 +39,6 @@ public interface FeedService {
     boolean lockVideoById(String id);
 
     boolean deleteVideoById(String id);
+
+    List<FeedDto> adminSearch(String type, String input);
 }

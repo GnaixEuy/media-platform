@@ -106,8 +106,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public FeedListResponse getHot(Integer cursor, Integer count) {
-        Page<Feed> feedPage = this.feedRepository.findAll(
-                PageRequest.of(cursor, count, Sort.by("createdDateTime").ascending()));
+        Page<Feed> feedPage = this.feedRepository.findAllByLocked(false, PageRequest.of(cursor, count, Sort.by("createdDateTime").ascending()));
         return this.dealWithFeedList(feedPage);
     }
 
@@ -126,7 +125,6 @@ public class FeedServiceImpl implements FeedService {
             FileDto cover = feedDto.getCover();
             cover.setUri(storageServices.get(cover.getStorage().name()).getFileUri(cover.getKey()));
             file.setUri(storageServices.get(file.getStorage().name()).getFileUri(file.getKey()));
-
         });
         return feedDtoPage;
     }
@@ -144,6 +142,24 @@ public class FeedServiceImpl implements FeedService {
     public boolean deleteVideoById(String id) {
         this.feedRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<FeedDto> adminSearch(String type, String input) {
+        List<FeedDto> list = null;
+        switch (type) {
+            case "creator":
+                list = this.feedRepository.findByCreatedBy_UserNickname(input).stream().map(this.feedMapper::feedToFeedDto).collect(Collectors.toList());
+                list.forEach(feedDto -> {
+                    FileDto file = feedDto.getFile();
+                    FileDto cover = feedDto.getCover();
+                    cover.setUri(storageServices.get(cover.getStorage().name()).getFileUri(cover.getKey()));
+                    file.setUri(storageServices.get(file.getStorage().name()).getFileUri(file.getKey()));
+                });
+                break;
+            default:
+        }
+        return list;
     }
 
 

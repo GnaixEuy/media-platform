@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
@@ -22,6 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 public interface FeedRepository extends JpaRepository<Feed, String> {
+
+    @Query("select f from Feed f where f.createdBy.userNickname = ?1")
+    List<Feed> findByCreatedBy_UserNickname(String userNickname);
+
+
     @Transactional
     @Modifying
     @Query("update Feed f set f.locked = ?1 where f.id = ?2")
@@ -29,4 +36,5 @@ public interface FeedRepository extends JpaRepository<Feed, String> {
 
     Page<Feed> findAllByCreatedBy(User createdBy, Pageable pageable);
 
+    Page<Feed> findAllByLocked(boolean lock, Pageable page);
 }
