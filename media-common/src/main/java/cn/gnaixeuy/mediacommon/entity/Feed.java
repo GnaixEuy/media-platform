@@ -58,4 +58,6 @@ public class Feed extends TraceableBaseEntity {
     @Column(name = "locked")
     private boolean locked;
 
+    @Column(name = "is_recommend")
+    private boolean recommend;
 }

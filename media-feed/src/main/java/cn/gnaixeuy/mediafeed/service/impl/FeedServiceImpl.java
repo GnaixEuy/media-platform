@@ -32,10 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -106,8 +103,60 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public FeedListResponse getHot(Integer cursor, Integer count) {
-        Page<Feed> feedPage = this.feedRepository.findAllByLocked(false, PageRequest.of(cursor, count, Sort.by("createdDateTime").ascending()));
-        return this.dealWithFeedList(feedPage);
+        List<Feed> trueRecommend = this.feedRepository.findByRecommendAndLocked(true, false);
+        List<Feed> falseRecommend = this.feedRepository.findByRecommendAndLocked(false, false);
+        Collections.shuffle(trueRecommend);
+        Collections.shuffle(falseRecommend);
+        trueRecommend.addAll(falseRecommend);
+        FeedListResponse feedListResponse = new FeedListResponse();
+        List<FeedDto> contentDto = trueRecommend
+                .stream()
+                .map(this.feedMapper::feedToFeedDto)
+                .collect(Collectors.toList());
+        List<FeedListList> feedList = new ArrayList<>(contentDto.size());
+        contentDto.forEach(item -> {
+            FeedListList feedInfo = new FeedListList();
+            feedInfo.setId(item.getId());
+            feedInfo.setType(item.getType().toString());
+            feedInfo.setDevice(item.getDevice());
+            String prefix = "https://media-1301661174.cos.ap-shanghai.myqcloud.com";
+            feedInfo.setContent(new FeedListListContent(item.getBio(), new ArrayList<>() {{
+                FeedVo feedVo = new FeedVo(
+                        item.getType(),
+                        prefix + item.getFile().getKey(),
+                        prefix + item.getCover().getKey(),
+                        prefix + item.getCover().getKey(),
+                        item.getDuration(),
+                        item.getWidth(),
+                        item.getHeight()
+                );
+                this.add(feedVo);
+            }}));
+            feedInfo.setCreatedDateTime(item.getCreatedDateTime());
+            feedInfo.setUser(this.userMapper.dto2Vo(item.getCreatedBy()));
+            ResponseResult<Long> feedLikeNumByFeedId = this.likeFeignClient.getFeedLikeNumByFeedId(feedInfo.getId());
+            if (feedLikeNumByFeedId.getCode() == 200) {
+                feedInfo.setLikeCount(feedLikeNumByFeedId.getData());
+            }
+            ResponseResult<Boolean> feedIsLikeByFeedIdAndUserId = this.likeFeignClient.getFeedIsLikeByFeedIdAndUserId(item.getCreatedBy().getId(), feedInfo.getId());
+            if (feedIsLikeByFeedIdAndUserId.getCode() == 200) {
+                feedInfo.setIsLike(feedIsLikeByFeedIdAndUserId.getData());
+            }
+            ResponseResult<Long> commentNumberByFeedId = this.commentFeignClient.getCommentNumberByFeedId(feedInfo.getId());
+            if (commentNumberByFeedId.getCode() == 200) {
+                feedInfo.setCommentCount(commentNumberByFeedId.getData());
+            }
+            ResponseResult<Boolean> followRelation = this.userFeignClient.isFollowRelation(item.getCreatedBy().getId(), getCurrentUser().getId());
+            if (followRelation.getCode() == 200) {
+                feedInfo.setIsFollow(followRelation.getData());
+            }
+            feedList.add(feedInfo);
+        });
+        feedListResponse.setList(feedList);
+        feedListResponse.setCount(count);
+        feedListResponse.setCursor(cursor);
+        feedListResponse.setHasMore(false);
+        return feedListResponse;
     }
 
     @Override
@@ -145,6 +194,11 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
+    public boolean recommendById(String id, boolean recommend) {
+        return this.feedRepository.updateRecommendById(recommend, id) == 1;
+    }
+
+    @Override
     public List<FeedDto> adminSearch(String type, String input) {
         List<FeedDto> list = null;
         switch (type) {
@@ -160,6 +214,62 @@ public class FeedServiceImpl implements FeedService {
             default:
         }
         return list;
+    }
+
+    @Override
+    public FeedListResponse getFriendFeedPage(Integer cursor, Integer count) {
+        User currentUser = this.getCurrentUser();
+        ResponseResult<List<User>> followList = this.userFeignClient.getFollowList(currentUser.getId());
+        List<Feed> feeds = new LinkedList<>();
+        if (followList.getCode() == 200) {
+            followList.getData().forEach(item -> feeds.addAll(this.feedRepository.findByCreatedBy_IdOrderByCreatedDateTimeAsc(item.getId())));
+        }
+        FeedListResponse feedListResponse = new FeedListResponse();
+        List<FeedDto> contentDto = feeds
+                .stream()
+                .map(this.feedMapper::feedToFeedDto)
+                .collect(Collectors.toList());
+        List<FeedListList> feedList = new ArrayList<>(contentDto.size());
+        contentDto.forEach(item -> {
+            FeedListList feedInfo = new FeedListList();
+            feedInfo.setId(item.getId());
+            feedInfo.setType(item.getType().toString());
+            feedInfo.setDevice(item.getDevice());
+            String prefix = "https://media-1301661174.cos.ap-shanghai.myqcloud.com";
+            feedInfo.setContent(new FeedListListContent(item.getBio(), new ArrayList<>() {{
+                FeedVo feedVo = new FeedVo(
+                        item.getType(),
+                        prefix + item.getFile().getKey(),
+                        prefix + item.getCover().getKey(),
+                        prefix + item.getCover().getKey(),
+                        item.getDuration(),
+                        item.getWidth(),
+                        item.getHeight()
+                );
+                this.add(feedVo);
+            }}));
+            feedInfo.setCreatedDateTime(item.getCreatedDateTime());
+            feedInfo.setUser(this.userMapper.dto2Vo(item.getCreatedBy()));
+            ResponseResult<Long> feedLikeNumByFeedId = this.likeFeignClient.getFeedLikeNumByFeedId(feedInfo.getId());
+            if (feedLikeNumByFeedId.getCode() == 200) {
+                feedInfo.setLikeCount(feedLikeNumByFeedId.getData());
+            }
+            ResponseResult<Boolean> feedIsLikeByFeedIdAndUserId = this.likeFeignClient.getFeedIsLikeByFeedIdAndUserId(item.getCreatedBy().getId(), feedInfo.getId());
+            if (feedIsLikeByFeedIdAndUserId.getCode() == 200) {
+                feedInfo.setIsLike(feedIsLikeByFeedIdAndUserId.getData());
+            }
+            ResponseResult<Long> commentNumberByFeedId = this.commentFeignClient.getCommentNumberByFeedId(feedInfo.getId());
+            if (commentNumberByFeedId.getCode() == 200) {
+                feedInfo.setCommentCount(commentNumberByFeedId.getData());
+            }
+            feedInfo.setIsFollow(false);
+            feedList.add(feedInfo);
+        });
+        feedListResponse.setList(feedList);
+        feedListResponse.setCount(count);
+        feedListResponse.setCursor(cursor);
+        feedListResponse.setHasMore(false);
+        return feedListResponse;
     }
 
 

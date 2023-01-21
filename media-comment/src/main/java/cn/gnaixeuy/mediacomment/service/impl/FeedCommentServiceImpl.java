@@ -73,6 +73,12 @@ public class FeedCommentServiceImpl implements FeedCommentService {
         return false;
     }
 
+    @Override
+    public boolean deleteComment(String id) {
+        this.feedCommentRepository.deleteById(id);
+        return true;
+    }
+
 
     @Autowired
     public void setFeedCommentMapper(FeedCommentMapper feedCommentMapper) {

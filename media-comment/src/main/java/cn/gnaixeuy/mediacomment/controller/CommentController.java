@@ -56,6 +56,12 @@ public class CommentController {
         return ResponseResult.success(this.feedCommentService.getCommentNumberByFeedId(feedId));
     }
 
+    @DeleteMapping(value = {"/deleteComment/{id}"})
+    public ResponseResult<String> deleteComment(@PathVariable String id) {
+        this.feedCommentService.deleteComment(id);
+        return ResponseResult.success("删除成功");
+    }
+
     @Autowired
     public void setFeedCommentService(FeedCommentService feedCommentService) {
         this.feedCommentService = feedCommentService;

@@ -49,4 +49,6 @@ public interface UserService {
     Long getFollowerNumber(String id);
 
     Long getFollowingNumber(String id);
+
+    List<User> getFollowList(String id);
 }

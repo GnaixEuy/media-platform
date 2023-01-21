@@ -58,6 +58,12 @@ public class UserController {
         return ResponseResult.success(this.userService.isFollowRelation(currentUser.getId(), followId));
     }
 
+
+    @GetMapping(value = {"/getFollowList/{id}"})
+    public ResponseResult<List<User>> getFollowList(@PathVariable String id) {
+        return ResponseResult.success(this.userService.getFollowList(id));
+    }
+
     @GetMapping(value = {"/me"})
     public ResponseResult<UserVo> me() {
         return ResponseResult.success(this.userMapper.dto2Vo(

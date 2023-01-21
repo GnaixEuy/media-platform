@@ -23,4 +23,6 @@ public interface FeedCommentService {
     List<FeedCommentDto> getCommentListByFeedId(String id);
 
     boolean commentLike(String id);
+
+    boolean deleteComment(String id);
 }

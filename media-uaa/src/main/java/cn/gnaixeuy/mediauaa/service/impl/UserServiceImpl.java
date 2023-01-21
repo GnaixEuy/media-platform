@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +80,10 @@ public class UserServiceImpl implements UserService {
         //TODO 默认头像
         User user = new User();
         user.setUserPhone(registerByPhoneRequest.getPhone());
+        user.setUserBirthday(new Date());
+        user.setUserCity("默认城市");
+        user.setUserBio("快来介绍你自己吧");
+        user.setUserPortrait("https://bpic.51yuansu.com/pic3/cover/01/69/80/595f67c042c1b_610.jpg");
         user.setUserNickname("TikTok用户_" + registerByPhoneRequest.getPhone().substring(registerByPhoneRequest.getPhone().length() - 4));
         List<Role> roleList = new ArrayList<>() {{
             Role role = new Role();

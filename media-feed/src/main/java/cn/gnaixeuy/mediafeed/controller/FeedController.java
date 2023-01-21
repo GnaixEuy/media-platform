@@ -48,6 +48,11 @@ public class FeedController {
         return ResponseResult.error(null);
     }
 
+    @GetMapping(value = {"/friend/timeline/{cursor}/{count}"})
+    public ResponseResult<FeedListResponse> getFriendFeedPage(@PathVariable Integer cursor, @PathVariable Integer count) {
+        return ResponseResult.success(this.feedService.getFriendFeedPage(cursor, count));
+    }
+
 
     @Autowired
     public void setFeedService(FeedService feedService) {

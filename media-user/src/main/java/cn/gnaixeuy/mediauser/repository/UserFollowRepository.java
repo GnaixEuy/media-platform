@@ -7,8 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface UserFollowRepository extends JpaRepository<UserFollow, String> {
+    @Query("select u from UserFollow u where u.userId = ?1")
+    List<UserFollow> findByUserId(String userId);
+
     @Query("select count(u) from UserFollow u where u.userId = ?1")
     long countByUserId(String userId);
 

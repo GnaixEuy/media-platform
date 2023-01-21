@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +100,13 @@ public class UserServiceImpl implements UserService {
             user.setUserGender(gender);
         }
         if (StrUtil.isNotEmpty(portrait)) {
-            user.setPortrait(portrait.substring(0, portrait.indexOf("?")));
+            String substring = null;
+            try {
+                substring = portrait.substring(0, portrait.indexOf("?"));
+                user.setPortrait(substring);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         if (StrUtil.isNotEmpty(profession)) {
             user.setProfession(profession);
@@ -193,6 +200,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getFollowingNumber(String id) {
         return this.userFollowRepository.countByUserId(id);
+    }
+
+    @Override
+    public List<User> getFollowList(String id) {
+        List<UserFollow> byUserId = this.userFollowRepository.findByUserId(id);
+        List<User> userList = new ArrayList<>(byUserId.size());
+        byUserId.forEach(item -> {
+            userList.add(this.userRepository.getOne(item.getFollowId()));
+        });
+        return userList;
     }
 
     @Autowired

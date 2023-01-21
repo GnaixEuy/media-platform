@@ -8,6 +8,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 /**
  * <img src="http://blog.gnaixeuy.cn/wp-content/uploads/2022/09/倒闭.png"/>
  *
@@ -31,4 +33,7 @@ public interface UserFeignClient {
     @GetMapping(value = {"/user/isFollowRelation/{userId}/{followId}"})
     ResponseResult<Boolean> isFollowRelation(@PathVariable(value = "followId") String followId,
                                              @PathVariable(value = "userId") String userId);
+
+    @GetMapping(value = {"/user/getFollowList/{id}"})
+    ResponseResult<List<User>> getFollowList(@PathVariable(value = "id") String id);
 }

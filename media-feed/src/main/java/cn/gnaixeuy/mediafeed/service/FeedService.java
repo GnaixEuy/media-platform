@@ -40,5 +40,9 @@ public interface FeedService {
 
     boolean deleteVideoById(String id);
 
+    boolean recommendById(String id, boolean recommend);
+
     List<FeedDto> adminSearch(String type, String input);
+
+    FeedListResponse getFriendFeedPage(Integer cursor, Integer count);
 }

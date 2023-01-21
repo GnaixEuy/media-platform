@@ -24,6 +24,13 @@ import java.util.List;
  */
 @Repository
 public interface FeedRepository extends JpaRepository<Feed, String> {
+    @Query("select f from Feed f where f.createdBy.id = ?1 order by f.createdDateTime")
+    List<Feed> findByCreatedBy_IdOrderByCreatedDateTimeAsc(String id);
+
+    @Transactional
+    @Modifying
+    @Query("update Feed f set f.recommend = ?1 where f.id = ?2")
+    int updateRecommendById(boolean recommend, String id);
 
     @Query("select f from Feed f where f.createdBy.userNickname = ?1")
     List<Feed> findByCreatedBy_UserNickname(String userNickname);
@@ -37,4 +44,10 @@ public interface FeedRepository extends JpaRepository<Feed, String> {
     Page<Feed> findAllByCreatedBy(User createdBy, Pageable pageable);
 
     Page<Feed> findAllByLocked(boolean lock, Pageable page);
+
+    Page<Feed> findAllByLockedAndRecommend(boolean lock, boolean recommend, Pageable page);
+
+    List<Feed> findByRecommend(boolean recommend);
+
+    List<Feed> findByRecommendAndLocked(boolean recommend, boolean lock);
 }

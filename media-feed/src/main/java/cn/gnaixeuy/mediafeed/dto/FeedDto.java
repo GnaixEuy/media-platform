@@ -40,5 +40,6 @@ public class FeedDto implements Serializable {
     private String bio;
     private String device;
     private boolean locked;
+    private boolean recommend;
 
 }

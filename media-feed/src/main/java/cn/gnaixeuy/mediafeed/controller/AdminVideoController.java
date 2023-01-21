@@ -27,7 +27,6 @@ import java.util.List;
 public class AdminVideoController {
     private FeedService feedService;
 
-
     @GetMapping(value = "/page")
     public ResponseResult<Page<FeedDto>> getVideoListPage(@PageableDefault(sort = {"createdDateTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
         Page<FeedDto> videoListPage = this.feedService.getVideoListPage(pageable);
@@ -53,6 +52,14 @@ public class AdminVideoController {
     @GetMapping(value = {"/search/{type}/{input}"})
     public ResponseResult<List<FeedDto>> search(@PathVariable String type, @PathVariable String input) {
         return ResponseResult.success(this.feedService.adminSearch(type, input));
+    }
+
+    @PutMapping(value = {"/recommend/{id}/{status}"})
+    public ResponseResult<String> recommend(@PathVariable String id, @PathVariable String status) {
+        System.out.println(id);
+        System.out.println(status);
+        this.feedService.recommendById(id, Boolean.parseBoolean(status));
+        return ResponseResult.success("修改成功");
     }
 
     @Autowired

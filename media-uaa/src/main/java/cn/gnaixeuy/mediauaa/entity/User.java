@@ -46,6 +46,9 @@ public class User extends BaseEntity implements UserDetails {
 
     private String lastLoginIp;
 
+    private String userPortrait;
+    private String userCity;
+    private String userBio;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss ", timezone = "GMT+8")
     private Date lastLoginTime;
 
